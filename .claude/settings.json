@@ -7,8 +7,7 @@
       "Glob",
       "Grep",
       "Agent",
-      "Bash",
-      "Bash(cd ~/Documents/myProjects/learning-roadmap && git *)",
+      "Bash(*)",
       "WebSearch",
       "WebFetch"
     ],
