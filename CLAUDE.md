@@ -133,6 +133,7 @@ learning-roadmap/
 | `вопросы` | Контрольные вопросы |
 | `сохрани` | Сохранить прогресс, продолжить (скилл `/save-session`) |
 | `стоп` | Сохранить и завершить (скилл `/save-session`) |
+| `quit` | `/save-session` → `git add -A && git commit` → `git push`. Полный выход с сохранением |
 
 ---
 
@@ -177,6 +178,7 @@ System Design интервью с фидбеком.
 ### Управление
 - `сохрани` — скилл `/save-session`
 - `запуши` — `git add -A && git commit` + `git push`
+- `quit` — `/save-session` → commit → push (полный выход)
 
 ---
 
