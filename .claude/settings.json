@@ -9,9 +9,11 @@
       "Agent",
       "Bash(*)",
       "WebSearch",
-      "WebFetch"
+      "WebFetch",
+      "Skill"
     ],
-    "deny": []
+    "deny": [],
+    "defaultMode": "bypassPermissions"
   },
   "hooks": {}
 }
