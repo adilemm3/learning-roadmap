@@ -70,7 +70,7 @@ EOF
 
 cat > "$BASE/cheatsheet.md" << EOF
 # ${TOPIC_NAME} — Шпаргалка
-> Время чтения: ~2 мин | Формат: для просмотра с телефона
+> Краткая и ёмкая выжимка для быстрого повторения
 
 ## Краткая суть
 <!-- 2-3 предложения -->
@@ -113,53 +113,110 @@ cat > "$BASE/interview-questions.md" << EOF
 </details>
 EOF
 
-cat > "$BASE/practice.md" << EOF
-# ${TOPIC_NAME} — Практика
+cat > "$BASE/practice.md" << 'PRACTICE_EOF'
+# TOPIC_PLACEHOLDER — Практика
 
-## Мини-задачи
+<!-- 5 новых задач для самостоятельной отработки. Задачи из сессий — в session.md -->
+<!-- Градация: 2 Easy + 2 Medium + 1 Hard -->
+<!-- Типы: код-ревью / реализация / рефакторинг / дебаг / архитектура -->
+<!-- Источники: learning-plan.md (блоки), session.md (слабые места), summary.md (концепции) -->
 
-### 🟢 Easy: <!-- название -->
+## Задача 1: <!-- название -->
+> Сложность: Easy | Тип: <!-- тип -->
+
 <!-- условие -->
-<details><summary>Решение</summary>
 
-\`\`\`csharp
-// TODO
-\`\`\`
+<details><summary>Подсказка</summary>
+
+<!-- наводящая мысль, не ответ -->
 
 </details>
 
-### 🟡 Medium: <!-- название -->
-<!-- условие -->
 <details><summary>Решение</summary>
 
-\`\`\`csharp
+```csharp
 // TODO
-\`\`\`
+```
 
 </details>
 
-### 🔴 Hard: <!-- название -->
-<!-- условие -->
-<details><summary>Решение</summary>
+## Задача 2: <!-- название -->
+> Сложность: Easy | Тип: <!-- тип -->
 
-\`\`\`csharp
-// TODO
-\`\`\`
+<!-- условие -->
+
+<details><summary>Подсказка</summary>
+
+<!-- наводящая мысль, не ответ -->
 
 </details>
 
-## Код-ревью
-Найди проблемы в этом коде:
-\`\`\`csharp
-// TODO: добавить код с проблемами
-\`\`\`
+<details><summary>Решение</summary>
 
-## Рефакторинг
-Улучши этот код:
-\`\`\`csharp
-// TODO: добавить код для рефакторинга
-\`\`\`
-EOF
+```csharp
+// TODO
+```
+
+</details>
+
+## Задача 3: <!-- название -->
+> Сложность: Medium | Тип: <!-- тип -->
+
+<!-- условие -->
+
+<details><summary>Подсказка</summary>
+
+<!-- наводящая мысль, не ответ -->
+
+</details>
+
+<details><summary>Решение</summary>
+
+```csharp
+// TODO
+```
+
+</details>
+
+## Задача 4: <!-- название -->
+> Сложность: Medium | Тип: <!-- тип -->
+
+<!-- условие -->
+
+<details><summary>Подсказка</summary>
+
+<!-- наводящая мысль, не ответ -->
+
+</details>
+
+<details><summary>Решение</summary>
+
+```csharp
+// TODO
+```
+
+</details>
+
+## Задача 5: <!-- название -->
+> Сложность: Hard | Тип: <!-- тип -->
+
+<!-- условие -->
+
+<details><summary>Подсказка</summary>
+
+<!-- наводящая мысль, не ответ -->
+
+</details>
+
+<details><summary>Решение</summary>
+
+```csharp
+// TODO
+```
+
+</details>
+PRACTICE_EOF
+sed -i '' "s/TOPIC_PLACEHOLDER/${TOPIC_NAME}/g" "$BASE/practice.md"
 
 cat > "$BASE/cases.md" << EOF
 # ${TOPIC_NAME} — Реальные кейсы

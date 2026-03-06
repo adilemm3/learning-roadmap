@@ -1,7 +1,4 @@
-# ASP.NET Core — Сводная шпаргалка
-> Агрегация из подтем | Обновляется при завершении подтем
-
-## HTTP Clients & IHttpClientFactory
+# HTTP Clients & IHttpClientFactory — Шпаргалка
 
 ## Проблема и решение
 

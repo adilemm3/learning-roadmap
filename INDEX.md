@@ -161,6 +161,7 @@
 | Filters & Model Binding | `tracks/dotnet/topics/06-asp-net-core/05-filters-model-binding/` |
 | Minimal API | `tracks/dotnet/topics/06-asp-net-core/06-minimal-api/` |
 | SignalR & gRPC | `tracks/dotnet/topics/06-asp-net-core/07-signalr-grpc/` |
+| HTTP Clients & IHttpClientFactory | `tracks/dotnet/topics/06-asp-net-core/08-http-clients/` |
 
 #### 07-data-access (6 подтем, Middle → Senior)
 

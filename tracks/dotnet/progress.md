@@ -39,6 +39,7 @@
 | ASP.NET Core | Filters & Model Binding | Middle | ⬜ не начата | 0 | — |
 | ASP.NET Core | Minimal API | Middle | ⬜ не начата | 0 | — |
 | ASP.NET Core | SignalR & gRPC | Middle | ⬜ не начата | 0 | — |
+| ASP.NET Core | HTTP Clients & IHttpClientFactory | Middle | ✅ завершена | 4 | 2026-03-06 |
 | Data Access | EF Core Basics | Middle | ⬜ не начата | 0 | — |
 | Data Access | EF Core Advanced | Middle | ⬜ не начата | 0 | — |
 | Data Access | Dapper | Middle | ⬜ не начата | 0 | — |
@@ -93,7 +94,7 @@
 | Уровень | Всего тем | Изучено | % |
 |---------|-----------|---------|---|
 | 🟢 Junior | 16 | 0 | 0% |
-| 🟡 Middle | 35 | 0 | 0% |
+| 🟡 Middle | 35 | 1 | 3% |
 | 🔴 Senior | 22 | 0 | 0% |
 | 🏛 Architect | 12 | 0 | 0% |
-| **Итого** | **85** | **0** | **0%** |
+| **Итого** | **85** | **1** | **1%** |

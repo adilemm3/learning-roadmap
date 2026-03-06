@@ -55,6 +55,7 @@
 - [ ] 05-filters-model-binding — зависит от: routing-controllers
 - [ ] 06-minimal-api — зависит от: routing-controllers, dependency-injection
 - [ ] 07-signalr-grpc — зависит от: task-async-await, middleware-pipeline
+- [ ] 08-http-clients — HTTP Clients & IHttpClientFactory, typed/named clients, Polly, тестирование. Зависит от: Dependency Injection, Task & async/await
 
 ### 9. Data Access (базовые)
 - [ ] 01-ef-core-basics — зависит от: linq, dependency-injection

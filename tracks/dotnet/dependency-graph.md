@@ -58,6 +58,8 @@ graph TD
     DI --> MAPI
     TAA --> SG[32: SignalR & gRPC]
     MW --> SG
+    DI --> HttpClients["HTTP Clients & IHttpClientFactory"]
+    TAA --> HttpClients
 
     %% ===== DATA ACCESS =====
     LINQ --> EFB[33: EF Core Basics]
