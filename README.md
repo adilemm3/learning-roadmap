@@ -81,6 +81,10 @@ tracks/dotnet/
 
 **15 разделов, 85 подтем, 4 уровня:** Junior → Middle → Senior → Architect
 
+## Учиться с телефона
+
+См. [Claude Code с телефона](guides/termius-ssh-setup.md) — управляй Mac-терминалом с iPhone/Android через SSH + Tailscale.
+
 ## Хочешь свою копию?
 
 См. [SETUP.md](SETUP.md) — отправь его содержимое в Claude Code и он создаст систему с нуля под твою технологию.
