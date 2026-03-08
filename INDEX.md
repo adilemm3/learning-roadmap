@@ -30,7 +30,7 @@
 
 | Шаблон | Путь | Для чего |
 |--------|------|----------|
-| Подтема (листовой узел) | `templates/topic/` | 9 файлов: summary, cheatsheet, interview-questions, practice, cases, diagram, resources, learning-plan, session |
+| Подтема (листовой узел) | `templates/topic/` | 11 файлов: summary, cheatsheet, interview-questions, interview-answers, practice, practice-solutions, cases, diagram, resources, learning-plan, session |
 | Раздел (родительский узел) | `templates/section/` | 4 файла: overview, cheatsheet, progress, section-exam |
 
 ## Трек: dotnet

@@ -1,20 +1,15 @@
 # {{TOPIC_NAME}} — Вопросы для собеседования
 
-## 🟢 Junior
+> Ответы → `interview-answers.md`
+
+## Junior
 1. <!-- TODO -->
 
-## 🟡 Middle
+## Middle
 1. <!-- TODO -->
 
-## 🔴 Senior
+## Senior
 1. <!-- TODO -->
 
-## 🏛 Architect
+## Architect
 1. <!-- TODO -->
-
----
-<details><summary>Ответы</summary>
-
-<!-- ответы на все вопросы -->
-
-</details>

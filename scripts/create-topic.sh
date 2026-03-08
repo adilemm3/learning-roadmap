@@ -93,114 +93,104 @@ EOF
 cat > "$BASE/interview-questions.md" << EOF
 # ${TOPIC_NAME} — Вопросы для собеседования
 
-## 🟢 Junior
+> Ответы → \`interview-answers.md\`
+
+## Junior
 1. <!-- TODO -->
 
-## 🟡 Middle
+## Middle
 1. <!-- TODO -->
 
-## 🔴 Senior
+## Senior
 1. <!-- TODO -->
 
-## 🏛 Architect
+## Architect
 1. <!-- TODO -->
+EOF
 
----
-<details><summary>Ответы</summary>
+cat > "$BASE/interview-answers.md" << EOF
+# ${TOPIC_NAME} — Ответы на вопросы
 
-<!-- ответы на все вопросы -->
+## Junior
+
+**1. <!-- вопрос -->**
+<details><summary>Ответ</summary>
+
+<!-- ответ -->
+
+</details>
+
+## Middle
+
+**1. <!-- вопрос -->**
+<details><summary>Ответ</summary>
+
+<!-- ответ -->
+
+</details>
+
+## Senior
+
+**1. <!-- вопрос -->**
+<details><summary>Ответ</summary>
+
+<!-- ответ -->
+
+</details>
+
+## Architect
+
+**1. <!-- вопрос -->**
+<details><summary>Ответ</summary>
+
+<!-- ответ -->
 
 </details>
 EOF
 
-cat > "$BASE/practice.md" << 'PRACTICE_EOF'
-# TOPIC_PLACEHOLDER — Практика
+cat > "$BASE/practice.md" << EOF
+# ${TOPIC_NAME} — Практика
 
-<!-- 5 новых задач для самостоятельной отработки. Задачи из сессий — в session.md -->
-<!-- Градация: 2 Easy + 2 Medium + 1 Hard -->
+> Подсказки и решения → \`practice-solutions.md\`
+
+<!-- 5 задач: 2 Easy + 2 Medium + 1 Hard -->
 <!-- Типы: код-ревью / реализация / рефакторинг / дебаг / архитектура -->
-<!-- Источники: learning-plan.md (блоки), session.md (слабые места), summary.md (концепции) -->
 
 ## Задача 1: <!-- название -->
 > Сложность: Easy | Тип: <!-- тип -->
 
 <!-- условие -->
 
-<details><summary>Подсказка</summary>
-
-<!-- наводящая мысль, не ответ -->
-
-</details>
-
-<details><summary>Решение</summary>
-
-```csharp
-// TODO
-```
-
-</details>
-
 ## Задача 2: <!-- название -->
 > Сложность: Easy | Тип: <!-- тип -->
 
 <!-- условие -->
-
-<details><summary>Подсказка</summary>
-
-<!-- наводящая мысль, не ответ -->
-
-</details>
-
-<details><summary>Решение</summary>
-
-```csharp
-// TODO
-```
-
-</details>
 
 ## Задача 3: <!-- название -->
 > Сложность: Medium | Тип: <!-- тип -->
 
 <!-- условие -->
 
-<details><summary>Подсказка</summary>
-
-<!-- наводящая мысль, не ответ -->
-
-</details>
-
-<details><summary>Решение</summary>
-
-```csharp
-// TODO
-```
-
-</details>
-
 ## Задача 4: <!-- название -->
 > Сложность: Medium | Тип: <!-- тип -->
 
 <!-- условие -->
 
-<details><summary>Подсказка</summary>
-
-<!-- наводящая мысль, не ответ -->
-
-</details>
-
-<details><summary>Решение</summary>
-
-```csharp
-// TODO
-```
-
-</details>
-
 ## Задача 5: <!-- название -->
 > Сложность: Hard | Тип: <!-- тип -->
 
 <!-- условие -->
+EOF
+
+cat > "$BASE/practice-solutions.md" << 'SOLUTIONS_EOF'
+# TOPIC_PLACEHOLDER — Подсказки и решения
+
+<!-- Каждое решение с кодом должно содержать:
+     1. Общую концепцию — какую проблему решаем и какой подход
+     2. Комментарии к каждой значимой строке — что делает и почему
+     3. Пояснения после кода — ключевые решения и альтернативы -->
+
+## Задача 1: <!-- название -->
 
 <details><summary>Подсказка</summary>
 
@@ -210,13 +200,97 @@ cat > "$BASE/practice.md" << 'PRACTICE_EOF'
 
 <details><summary>Решение</summary>
 
+<!-- концепция -->
+
 ```csharp
-// TODO
+// TODO — код с пояснениями каждой строки
 ```
 
+<!-- ключевые решения и альтернативы -->
+
 </details>
-PRACTICE_EOF
-sed -i '' "s/TOPIC_PLACEHOLDER/${TOPIC_NAME}/g" "$BASE/practice.md"
+
+## Задача 2: <!-- название -->
+
+<details><summary>Подсказка</summary>
+
+<!-- наводящая мысль, не ответ -->
+
+</details>
+
+<details><summary>Решение</summary>
+
+<!-- концепция -->
+
+```csharp
+// TODO — код с пояснениями каждой строки
+```
+
+<!-- ключевые решения и альтернативы -->
+
+</details>
+
+## Задача 3: <!-- название -->
+
+<details><summary>Подсказка</summary>
+
+<!-- наводящая мысль, не ответ -->
+
+</details>
+
+<details><summary>Решение</summary>
+
+<!-- концепция -->
+
+```csharp
+// TODO — код с пояснениями каждой строки
+```
+
+<!-- ключевые решения и альтернативы -->
+
+</details>
+
+## Задача 4: <!-- название -->
+
+<details><summary>Подсказка</summary>
+
+<!-- наводящая мысль, не ответ -->
+
+</details>
+
+<details><summary>Решение</summary>
+
+<!-- концепция -->
+
+```csharp
+// TODO — код с пояснениями каждой строки
+```
+
+<!-- ключевые решения и альтернативы -->
+
+</details>
+
+## Задача 5: <!-- название -->
+
+<details><summary>Подсказка</summary>
+
+<!-- наводящая мысль, не ответ -->
+
+</details>
+
+<details><summary>Решение</summary>
+
+<!-- концепция -->
+
+```csharp
+// TODO — код с пояснениями каждой строки
+```
+
+<!-- ключевые решения и альтернативы -->
+
+</details>
+SOLUTIONS_EOF
+sed -i '' "s/TOPIC_PLACEHOLDER/${TOPIC_NAME}/g" "$BASE/practice-solutions.md"
 
 cat > "$BASE/cases.md" << EOF
 # ${TOPIC_NAME} — Реальные кейсы
@@ -281,4 +355,4 @@ EOF
 
 git add "$BASE"
 
-echo "Created ${BASE}/ with 9 files and staged in git"
+echo "Created ${BASE}/ with 11 files and staged in git"
