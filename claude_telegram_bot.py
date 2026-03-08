@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
-Claude Code CLI — Telegram Bot (Interactive PTY)
+Claude Code CLI — Telegram Bot (Stream JSON)
 ===================================================
-Управляет интерактивным Claude Code через Telegram.
-Один долгоживущий процесс — все команды работают: /compact, /clear, quit.
+Управляет Claude Code через Telegram.
+Каждое сообщение → claude -p --output-format stream-json --verbose.
+Контекст сохраняется через --resume <session_id>.
 
 Установка:
   pip3 install python-telegram-bot --break-system-packages
@@ -20,13 +21,10 @@ Claude Code CLI — Telegram Bot (Interactive PTY)
 import os
 from pathlib import Path
 import asyncio
-import pty
-import fcntl
-import select
+import json
 import re
 import logging
 import sys
-import time
 from telegram import Update, BotCommand
 from telegram.ext import (
     Application,
@@ -35,7 +33,6 @@ from telegram.ext import (
     filters,
     ContextTypes,
 )
-from telegram.constants import ChatAction
 
 # ─────────────────────────────────────────
 #  Загрузка .env
@@ -53,9 +50,6 @@ ALLOWED_USER_ID = os.getenv("ALLOWED_USER_ID", "")
 CLAUDE_PATH     = os.getenv("CLAUDE_PATH", "claude")
 PROJECT_DIR     = str(Path(__file__).parent)
 
-# Секунды тишины перед отправкой буфера в Telegram
-OUTPUT_IDLE_SEC = 5.0
-
 logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s",
     level=logging.INFO,
@@ -63,53 +57,87 @@ logging.basicConfig(
 logging.getLogger("httpx").setLevel(logging.WARNING)
 log = logging.getLogger(__name__)
 
-# ─────────────────────────────────────────
-#  Очистка terminal output
-# ─────────────────────────────────────────
-ANSI_RE = re.compile(
-    r'\x1b'
-    r'(?:'
-    r'\[[0-9;?]*[a-zA-Z~]'
-    r'|\][^\x07\x1b]*(?:\x07|\x1b\\)'
-    r'|\([B0UK]'
-    r'|[>=][0-9]*'
-    r'|[78DEHM]'
-    r')'
-)
-CONTROL_RE = re.compile(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]')
 
+def md_to_telegram_html(text: str) -> str:
+    """Markdown → Telegram HTML. Поддерживает: code blocks, inline code, bold, italic, tables."""
+    lines = text.split('\n')
+    result = []
+    in_code_block = False
+    table_rows = []
 
-def clean_output(text: str) -> str:
-    text = ANSI_RE.sub('', text)
-    text = CONTROL_RE.sub('', text)
-
-    lines = []
-    for line in text.splitlines():
-        stripped = line.strip()
-        if not stripped:
-            lines.append('')
+    for line in lines:
+        # Code blocks: ```lang ... ```
+        if line.strip().startswith('```'):
+            if in_code_block:
+                in_code_block = False
+                result.append('</pre>')
+            else:
+                in_code_block = True
+                result.append('<pre>')
             continue
-        # Пропускаем UI-мусор Claude TUI
-        if any(s in stripped for s in [
-            'bypass permissions',
-            'shift+tab to cycle',
-            'Checking for updates',
-            '⏵⏵',
-            'ClaudeCode',
-            'Claude Code v',
-        ]):
+
+        if in_code_block:
+            result.append(_escape_html(line))
             continue
-        # Пропускаем строки состоящие только из box-drawing символов
-        if all(c in '╭╮╰╯│─┌┐└┘├┤┬┴┼═║╔╗╚╝╠╣╦╩╬▪▐▛▜▝▘█▌▀▄⧉⏵ ' for c in stripped):
+
+        # Tables: | col | col |
+        if line.strip().startswith('|') and line.strip().endswith('|'):
+            cells = [c.strip() for c in line.strip().strip('|').split('|')]
+            if all(set(c) <= {'-', ':', ' '} for c in cells):
+                continue
+            row = ' | '.join(_inline_format(_escape_html(c)) for c in cells)
+            table_rows.append(row)
             continue
-        lines.append(stripped)
 
-    text = '\n'.join(lines)
-    text = re.sub(r'\n{3,}', '\n\n', text)
-    return text.strip()
+        # Flush table
+        if table_rows:
+            result.append('<pre>' + '\n'.join(table_rows) + '</pre>')
+            table_rows = []
+
+        # Headers: ## Title → bold
+        header_match = re.match(r'^(#{1,6})\s+(.+)$', line)
+        if header_match:
+            level = len(header_match.group(1))
+            title = _inline_format(_escape_html(header_match.group(2)))
+            if level <= 2:
+                result.append(f'\n<b>{title}</b>\n')
+            else:
+                result.append(f'<b>{title}</b>')
+            continue
+
+        # Regular line
+        escaped = _escape_html(line)
+        formatted = _inline_format(escaped)
+        result.append(formatted)
+
+    if table_rows:
+        result.append('<pre>' + '\n'.join(table_rows) + '</pre>')
+
+    if in_code_block:
+        result.append('</pre>')
+
+    return '\n'.join(result)
 
 
-def split_text(text: str, max_len: int = 4000) -> list[str]:
+def _escape_html(text: str) -> str:
+    return text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+
+
+def _inline_format(text: str) -> str:
+    # inline code: `code`
+    text = re.sub(r'`([^`]+)`', r'<code>\1</code>', text)
+    # bold: **text** or __text__
+    text = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', text)
+    text = re.sub(r'__(.+?)__', r'<b>\1</b>', text)
+    # italic: *text* or _text_ (но не внутри слов)
+    text = re.sub(r'(?<!\w)\*([^*]+?)\*(?!\w)', r'<i>\1</i>', text)
+    text = re.sub(r'(?<!\w)_([^_]+?)_(?!\w)', r'<i>\1</i>', text)
+    # strikethrough: ~~text~~
+    text = re.sub(r'~~(.+?)~~', r'<s>\1</s>', text)
+    return text
+
+
+def split_text(text: str, max_len: int = 4096) -> list[str]:
     if len(text) <= max_len:
         return [text]
     chunks = []
@@ -120,155 +148,215 @@ def split_text(text: str, max_len: int = 4000) -> list[str]:
 
 
 # ─────────────────────────────────────────
-#  Интерактивный процесс Claude
+#  Claude Runner (stream-json)
 # ─────────────────────────────────────────
-class ClaudeProcess:
+class ClaudeRunner:
+
+    CONTEXT_LIMIT = 200_000
+    SAVE_THRESHOLD = 0.70   # 70% — сохраняем прогресс
+    RESET_THRESHOLD = 0.85  # 85% — принудительный reset
 
     def __init__(self):
-        self.process: asyncio.subprocess.Process | None = None
-        self.master_fd: int | None = None
-        self._reader_task: asyncio.Task | None = None
-        self._flusher_task: asyncio.Task | None = None
-        self._buffer: str = ""
-        self._last_data_time: float = 0
-        self._chat_id: int | None = None
-        self._bot = None
+        self.session_id: str | None = None
+        self._process: asyncio.subprocess.Process | None = None
+        self._busy = False
+        self._last_input_tokens = 0
+        self._save_pending = False
 
     @property
-    def is_running(self) -> bool:
-        return self.process is not None and self.process.returncode is None
+    def is_busy(self) -> bool:
+        return self._busy
 
-    async def start(self, bot, chat_id: int) -> str:
-        if self.is_running:
-            return "Claude уже запущен. /kill для перезапуска."
+    async def ask(self, text: str, bot, chat_id: int) -> None:
+        if self._busy:
+            await bot.send_message(chat_id=chat_id, text="⏳ Claude ещё отвечает...")
+            return
 
-        self._bot = bot
-        self._chat_id = chat_id
-        self._buffer = ""
+        self._busy = True
+        try:
+            usage_pct = self._last_input_tokens / self.CONTEXT_LIMIT if self.session_id else 0
 
-        master_fd, slave_fd = pty.openpty()
-        self.master_fd = master_fd
-
-        # Устанавливаем размер терминала (широкий, чтобы не было переносов)
-        import struct
-        import termios
-        winsize = struct.pack('HHHH', 50, 200, 0, 0)
-        fcntl.ioctl(slave_fd, termios.TIOCSWINSZ, winsize)
-
-        self.process = await asyncio.create_subprocess_exec(
-            CLAUDE_PATH,
-            stdin=slave_fd,
-            stdout=slave_fd,
-            stderr=slave_fd,
-            cwd=PROJECT_DIR,
-            env={**os.environ, "TERM": "dumb", "NO_COLOR": "1"},
-        )
-        os.close(slave_fd)
-
-        self._reader_task = asyncio.create_task(self._read_loop())
-        self._flusher_task = asyncio.create_task(self._flush_loop())
-
-        log.info("Claude started pid=%s in %s", self.process.pid, PROJECT_DIR)
-        return f"Claude запущен (pid={self.process.pid})"
-
-    async def _read_loop(self):
-        loop = asyncio.get_event_loop()
-        while self.is_running:
-            try:
-                data = await loop.run_in_executor(None, self._read_chunk)
-                if data:
-                    self._buffer += data
-                    self._last_data_time = time.monotonic()
-            except OSError:
-                break
-            await asyncio.sleep(0.05)
-
-        # Процесс завершился — отправить остаток буфера
-        if self._buffer:
-            await self._flush()
-        if self._bot and self._chat_id:
-            try:
-                await self._bot.send_message(
-                    chat_id=self._chat_id,
-                    text="Claude процесс завершился.",
+            # 85%+ — принудительный reset (сохранять рискованно, может не влезть)
+            if usage_pct >= self.RESET_THRESHOLD:
+                log.warning("Force reset: %.0f%% context used", usage_pct * 100)
+                await bot.send_message(
+                    chat_id=chat_id,
+                    text=f"⚠️ Контекст {usage_pct:.0%} — reset без сохранения (не влезет). Прогресс в файлах.",
                 )
-            except Exception:
-                pass
+                self._reset()
 
-    def _read_chunk(self) -> str:
+            # 70-85% — сохраняем и reset
+            elif usage_pct >= self.SAVE_THRESHOLD:
+                log.info("Auto-save + reset: %.0f%% context used", usage_pct * 100)
+                await bot.send_message(
+                    chat_id=chat_id,
+                    text=f"🔄 Контекст {usage_pct:.0%} — сохраняю прогресс...",
+                )
+                await self._run("сохрани", bot, chat_id, silent=True)
+                self._reset()
+
+            await self._run(text, bot, chat_id)
+        finally:
+            self._busy = False
+
+    async def _run(self, text: str, bot, chat_id: int, silent: bool = False) -> None:
+        cmd = [
+            CLAUDE_PATH, "-p", text,
+            "--output-format", "stream-json",
+            "--verbose",
+        ]
+        if self.session_id:
+            cmd += ["--resume", self.session_id]
+
+        log.info("-> Claude: %s", text[:80])
+
         try:
-            ready, _, _ = select.select([self.master_fd], [], [], 0.5)
-            if ready:
-                raw = os.read(self.master_fd, 8192)
-                if not raw:
-                    return ""
-                return raw.decode("utf-8", errors="replace")
-            return ""
-        except (OSError, ValueError):
-            return ""
-
-    async def _flush_loop(self):
-        while self.is_running:
-            await asyncio.sleep(1.0)
-            if (
-                self._buffer
-                and self._last_data_time > 0
-                and time.monotonic() - self._last_data_time >= OUTPUT_IDLE_SEC
-            ):
-                await self._flush()
-
-    async def _flush(self):
-        if not self._buffer:
+            self._process = await asyncio.create_subprocess_exec(
+                *cmd,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+                cwd=PROJECT_DIR,
+            )
+        except Exception as e:
+            log.error("Failed to start claude: %s", e)
+            await bot.send_message(chat_id=chat_id, text=f"Ошибка запуска: {e}")
             return
-        text = clean_output(self._buffer)
-        self._buffer = ""
-        self._last_data_time = 0
-        if not text or not self._bot or not self._chat_id:
-            return
-        for chunk in split_text(text):
+
+        thinking_msg = None
+        if not silent:
+            thinking_msg = await bot.send_message(chat_id=chat_id, text="⏳ Claude думает...")
+
+        collected_text = ""
+        tool_names = []
+
+        async for raw_line in self._process.stdout:
+            line = raw_line.decode("utf-8", errors="replace").strip()
+            if not line:
+                continue
+
             try:
-                await self._bot.send_message(chat_id=self._chat_id, text=chunk)
-            except Exception as e:
-                log.error("Send error: %s", e)
+                event = json.loads(line)
+            except json.JSONDecodeError:
+                log.warning("Bad JSON: %s", line[:200])
+                continue
 
-    async def send(self, text: str) -> None:
-        if not self.is_running or self.master_fd is None:
+            etype = event.get("type", "")
+            subtype = event.get("subtype", "")
+
+            # init → session_id
+            if etype == "system" and subtype == "init":
+                self.session_id = event.get("session_id", self.session_id)
+                log.info("Session: %s", self.session_id)
+                continue
+
+            # assistant → текст ответа и/или tool_use
+            if etype == "assistant":
+                message = event.get("message", {})
+                for block in message.get("content", []):
+                    if block.get("type") == "text":
+                        collected_text += block.get("text", "")
+                    elif block.get("type") == "tool_use":
+                        tool_name = block.get("name", "tool")
+                        tool_names.append(tool_name)
+                        log.info("Tool: %s", tool_name)
+
+                        if thinking_msg:
+                            try:
+                                await thinking_msg.edit_text(f"🔧 {tool_name}...")
+                            except Exception:
+                                pass
+                continue
+
+            # result → завершение + usage
+            if etype == "result":
+                sid = event.get("session_id")
+                if sid:
+                    self.session_id = sid
+                cost = event.get("total_cost_usd", 0)
+                duration = event.get("duration_ms", 0)
+
+                usage = event.get("usage", {})
+                self._last_input_tokens = (
+                    usage.get("input_tokens", 0)
+                    + usage.get("cache_creation_input_tokens", 0)
+                    + usage.get("cache_read_input_tokens", 0)
+                )
+                usage_pct = self._last_input_tokens / self.CONTEXT_LIMIT
+
+                log.info(
+                    "Done: %.1fs, $%.4f, tokens=%d (%.0f%%), session=%s",
+                    duration / 1000, cost,
+                    self._last_input_tokens, usage_pct * 100,
+                    self.session_id,
+                )
+                continue
+
+        stderr_data = await self._process.stderr.read()
+        return_code = await self._process.wait()
+        self._process = None
+
+        if silent:
+            log.info("Silent run done, text length=%d", len(collected_text))
             return
-        os.write(self.master_fd, (text + "\n").encode())
 
-    async def stop(self) -> str:
-        if not self.is_running:
-            return "Claude не запущен."
-        self.process.terminate()
-        try:
-            await asyncio.wait_for(self.process.wait(), timeout=10)
-        except asyncio.TimeoutError:
-            self.process.kill()
-        await self._cleanup()
-        return "Claude остановлен."
+        if return_code != 0 and not collected_text:
+            stderr_text = stderr_data.decode("utf-8", errors="replace").strip()
+            error_msg = f"⚠️ Claude error (code {return_code})"
+            if stderr_text:
+                error_msg += f":\n{stderr_text[:500]}"
+            log.error("Claude exited with code %d: %s", return_code, stderr_text[:200])
+            if thinking_msg:
+                try:
+                    await thinking_msg.edit_text(error_msg)
+                except Exception:
+                    await bot.send_message(chat_id=chat_id, text=error_msg)
+            else:
+                await bot.send_message(chat_id=chat_id, text=error_msg)
+            return
 
-    async def kill(self) -> str:
-        if not self.is_running:
-            return "Claude не запущен."
-        self.process.kill()
-        await self._cleanup()
-        return "Claude убит."
+        if collected_text:
+            if thinking_msg:
+                try:
+                    await thinking_msg.delete()
+                except Exception:
+                    pass
 
-    async def _cleanup(self):
-        for task in (self._reader_task, self._flusher_task):
-            if task:
-                task.cancel()
-        if self.master_fd is not None:
-            try:
-                os.close(self.master_fd)
-            except OSError:
-                pass
-            self.master_fd = None
-        self.process = None
-        self._buffer = ""
+            html = md_to_telegram_html(collected_text.strip())
+            for chunk in split_text(html):
+                try:
+                    await bot.send_message(
+                        chat_id=chat_id, text=chunk, parse_mode="HTML",
+                    )
+                except Exception:
+                    try:
+                        await bot.send_message(chat_id=chat_id, text=chunk)
+                    except Exception as e:
+                        log.error("Send error: %s", e)
+        else:
+            if thinking_msg:
+                try:
+                    await thinking_msg.edit_text("⚠️ Claude вернул пустой ответ")
+                except Exception:
+                    pass
+
+    def _reset(self):
+        self.session_id = None
+        self._last_input_tokens = 0
+        log.info("Session reset")
+
+    def clear_session(self):
+        self._reset()
+        log.info("Session cleared by user")
+
+    async def cancel(self) -> str:
+        if self._process and self._process.returncode is None:
+            self._process.terminate()
+            self._busy = False
+            return "Запрос отменён."
+        return "Нет активного запроса."
 
 
-claude_proc = ClaudeProcess()
+runner = ClaudeRunner()
 
 
 # ─────────────────────────────────────────
@@ -290,95 +378,78 @@ async def cmd_start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         return
     await update.message.reply_text(
         "Claude Code — Telegram Remote\n\n"
+        "Просто пиши — сообщения передаются в Claude.\n\n"
         "Управление:\n"
-        "/run — запустить Claude\n"
-        "/quit — завершить (сохранит сессию)\n"
-        "/kill — принудительно убить\n"
-        "/compact — сжать контекст\n"
-        "/clear — очистить контекст\n"
-        "/status — статус процесса\n\n"
+        "/clear — новый диалог\n"
+        "/compact — сохранить + сбросить контекст\n"
+        "/cancel — отменить текущий запрос\n"
+        "/status — статус\n\n"
         "Обучение:\n"
         "/learn — продолжить обучение\n"
         "/next, /yes, /practice, /deep, /skip\n"
-        "/save, /stop, /progress\n\n"
-        "Обычные сообщения передаются в Claude."
+        "/save, /stop, /progress"
     )
-
-
-async def cmd_run(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
-    if not is_allowed(update):
-        return
-    log.info("/run — запуск Claude")
-    result = await claude_proc.start(ctx.bot, update.effective_chat.id)
-    await update.message.reply_text(result)
-
-
-async def cmd_quit(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
-    if not is_allowed(update):
-        return
-    if not claude_proc.is_running:
-        await update.message.reply_text("Claude не запущен.")
-        return
-    log.info("/quit — завершение Claude")
-    await claude_proc.send("quit")
-    await update.message.reply_text("Отправлено quit...")
-    await asyncio.sleep(8)
-    if claude_proc.is_running:
-        await claude_proc.stop()
-
-
-async def cmd_kill(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
-    if not is_allowed(update):
-        return
-    log.info("/kill — принудительная остановка")
-    result = await claude_proc.kill()
-    await update.message.reply_text(result)
-
-
-async def cmd_compact(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
-    if not is_allowed(update):
-        return
-    if not claude_proc.is_running:
-        await update.message.reply_text("Claude не запущен. /run")
-        return
-    log.info("/compact")
-    await claude_proc.send("/compact")
 
 
 async def cmd_clear(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if not is_allowed(update):
         return
-    if not claude_proc.is_running:
-        await update.message.reply_text("Claude не запущен. /run")
+    runner.clear_session()
+    await update.message.reply_text("Контекст очищен. Следующее сообщение начнёт новый диалог.")
+
+
+async def cmd_compact(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    if not is_allowed(update):
         return
-    log.info("/clear")
-    await claude_proc.send("/clear")
+    if runner.is_busy:
+        await update.message.reply_text("⏳ Claude занят, подожди.")
+        return
+    if not runner.session_id:
+        await update.message.reply_text("Нечего сжимать — диалог ещё не начат.")
+        return
+
+    usage_pct = runner._last_input_tokens / runner.CONTEXT_LIMIT
+    await update.message.reply_text(
+        f"🔄 Контекст {usage_pct:.0%} — сохраняю прогресс и сбрасываю сессию..."
+    )
+    runner._busy = True
+    try:
+        await runner._run("сохрани", ctx.bot, update.effective_chat.id, silent=True)
+        runner._reset()
+        await update.message.reply_text("✅ Прогресс сохранён, сессия обновлена.")
+    except Exception as e:
+        log.error("Compact failed: %s", e)
+        runner._reset()
+        await update.message.reply_text(f"⚠️ Ошибка при сохранении, сессия сброшена: {e}")
+    finally:
+        runner._busy = False
+
+
+async def cmd_cancel(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    if not is_allowed(update):
+        return
+    result = await runner.cancel()
+    await update.message.reply_text(result)
 
 
 async def cmd_status(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if not is_allowed(update):
         return
-    if claude_proc.is_running:
-        await update.message.reply_text(
-            f"Claude работает (pid={claude_proc.process.pid})\n{PROJECT_DIR}"
-        )
-    else:
-        await update.message.reply_text("Claude не запущен. /run для запуска.")
+    busy = "⏳ Обрабатывает запрос..." if runner.is_busy else "✅ Свободен"
+    session = runner.session_id[:8] + "..." if runner.session_id else "новый диалог"
+    await update.message.reply_text(f"{busy}\nСессия: {session}\n{PROJECT_DIR}")
 
 
 async def cmd_help(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if not is_allowed(update):
         return
     await update.message.reply_text(
-        "Управление Claude:\n"
-        "  /run — запустить\n"
-        "  /quit — сохранить и выйти\n"
-        "  /kill — принудительно убить\n"
-        "  /compact — сжать контекст\n"
-        "  /clear — очистить контекст\n"
-        "  /status — статус процесса\n\n"
-        "Обучение (отправляются как текст):\n"
-        "  /learn [тема] — учим / продолжить\n"
+        "Управление:\n"
+        "  /clear — новый диалог\n"
+        "  /cancel — отменить запрос\n"
+        "  /status — статус\n\n"
+        "Обучение:\n"
+        "  /learn [тема] — учим\n"
         "  /next — дальше\n"
         "  /yes — да\n"
         "  /practice — практика\n"
@@ -387,14 +458,14 @@ async def cmd_help(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         "  /save — сохрани\n"
         "  /stop — стоп\n"
         "  /progress — прогресс\n\n"
-        "Обычные сообщения передаются как есть."
+        "Обычные сообщения передаются в Claude."
     )
 
 
 # ─────────────────────────────────────────
-#  Shortcut-команды проекта
+#  Shortcut-команды обучения
 # ─────────────────────────────────────────
-SHORTCUT_COMMANDS = {
+SHORTCUTS = {
     "learn":    "давай",
     "next":     "дальше",
     "yes":      "да",
@@ -410,18 +481,15 @@ SHORTCUT_COMMANDS = {
 async def cmd_shortcut(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if not is_allowed(update):
         return
-    if not claude_proc.is_running:
-        await update.message.reply_text("Claude не запущен. /run для запуска.")
-        return
 
     command = update.message.text.split()[0].lstrip("/").split("@")[0]
-    text = SHORTCUT_COMMANDS.get(command, command)
+    text = SHORTCUTS.get(command, command)
     args = update.message.text.split(maxsplit=1)
     if len(args) > 1:
         text = f"учим {args[1]}" if command == "learn" else f"{text} {args[1]}"
 
-    log.info("/%s -> Claude: %s", command, text)
-    await claude_proc.send(text)
+    log.info("/%s -> %s", command, text)
+    await runner.ask(text, ctx.bot, update.effective_chat.id)
 
 
 async def handle_message(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
@@ -430,11 +498,8 @@ async def handle_message(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     text = update.message.text.strip()
     if not text:
         return
-    if not claude_proc.is_running:
-        await update.message.reply_text("Claude не запущен. /run для запуска.")
-        return
-    log.info("-> Claude: %s", text[:80])
-    await claude_proc.send(text)
+    log.info("Message: %s", text[:80])
+    await runner.ask(text, ctx.bot, update.effective_chat.id)
 
 
 # ─────────────────────────────────────────
@@ -442,20 +507,18 @@ async def handle_message(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 # ─────────────────────────────────────────
 async def post_init(app: Application):
     await app.bot.set_my_commands([
-        BotCommand("run",      "Запустить Claude"),
-        BotCommand("learn",    "Учим [тема] — напр. /learn gc"),
+        BotCommand("learn",    "Учим [тема]"),
         BotCommand("next",     "Следующий блок"),
-        BotCommand("yes",      "Да / подтвердить"),
+        BotCommand("yes",      "Подтвердить"),
         BotCommand("practice", "Задачи"),
         BotCommand("deep",     "Углубиться"),
-        BotCommand("skip",     "Пропустить блок"),
-        BotCommand("save",     "Сохранить прогресс"),
-        BotCommand("stop",     "Сохранить и завершить"),
-        BotCommand("progress", "Показать прогресс"),
-        BotCommand("compact",  "Сжать контекст"),
-        BotCommand("clear",    "Очистить контекст"),
-        BotCommand("quit",     "Завершить Claude"),
-        BotCommand("kill",     "Убить процесс"),
+        BotCommand("skip",     "Пропустить"),
+        BotCommand("save",     "Сохранить"),
+        BotCommand("stop",     "Завершить"),
+        BotCommand("progress", "Прогресс"),
+        BotCommand("clear",    "Новый диалог"),
+        BotCommand("compact",  "Сохранить + сбросить контекст"),
+        BotCommand("cancel",   "Отменить запрос"),
         BotCommand("status",   "Статус"),
         BotCommand("help",     "Справка"),
     ])
@@ -479,14 +542,12 @@ def main():
     )
 
     app.add_handler(CommandHandler("start",   cmd_start))
-    app.add_handler(CommandHandler("run",     cmd_run))
-    app.add_handler(CommandHandler("quit",    cmd_quit))
-    app.add_handler(CommandHandler("kill",    cmd_kill))
-    app.add_handler(CommandHandler("compact", cmd_compact))
     app.add_handler(CommandHandler("clear",   cmd_clear))
-    app.add_handler(CommandHandler("status",  cmd_status))
-    app.add_handler(CommandHandler("help",    cmd_help))
-    for cmd in SHORTCUT_COMMANDS:
+    app.add_handler(CommandHandler("compact", cmd_compact))
+    app.add_handler(CommandHandler("cancel",  cmd_cancel))
+    app.add_handler(CommandHandler("status", cmd_status))
+    app.add_handler(CommandHandler("help",   cmd_help))
+    for cmd in SHORTCUTS:
         app.add_handler(CommandHandler(cmd, cmd_shortcut))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 

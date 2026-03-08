@@ -2,7 +2,7 @@
 
 | Раздел | Тема | Уровень | Статус | Уверенность (1-5) | Последняя сессия |
 |--------|------|---------|--------|--------------------|------------------|
-| C# Fundamentals | Type System | Junior | 🟡 в процессе | 2 | 2026-03-05 |
+| C# Fundamentals | Type System | Junior | 🟡 в процессе | 2 | 2026-03-08 |
 | C# Fundamentals | Value vs Reference | Junior | ⬜ не начата | 0 | — |
 | C# Fundamentals | Memory: Stack & Heap | Junior | ⬜ не начата | 0 | — |
 | C# Fundamentals | Garbage Collector | Junior | ⬜ не начата | 0 | — |

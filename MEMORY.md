@@ -7,7 +7,7 @@ dotnet
 
 ## Активная тема
 Тема: Type System
-Блок: 2/6 (следующий — Встроенные типы и числовые нюансы)
+Блок: 3/6 (в процессе — объяснение дано, верификация прервана на Q1)
 Путь: tracks/dotnet/topics/01-csharp-fundamentals/01-type-system/
 
 ## Стиль ученика (кэш из learner-profile.md)

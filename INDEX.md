@@ -44,6 +44,7 @@
 | Roadmap | `tracks/dotnet/roadmap.md` |
 | Progress | `tracks/dotnet/progress.md` |
 | Dependency Graph | `tracks/dotnet/dependency-graph.md` |
+| Glossary | `tracks/dotnet/glossary.md` |
 
 ### Разделы и подтемы
 
