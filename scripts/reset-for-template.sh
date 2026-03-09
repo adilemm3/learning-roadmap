@@ -130,7 +130,7 @@ dotnet
 
 ## Заметки
 - Структура: tracks/ с треками по технологиям
-- .NET трек: 15 разделов, 85 подтем
+- .NET трек: 15 разделов, 108 подтем
 - Скиллы: learn, save-session, create-topic, rebalance, assess, verify
 EOF
 
