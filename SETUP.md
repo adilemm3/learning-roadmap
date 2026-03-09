@@ -31,7 +31,7 @@ GitHub: public                       # public или private
 
 ### 1. Инициализация
 
-Создай директорию `~/learning-roadmap`, инициализируй git, создай `.gitignore` (игнорируй `.DS_Store`, `*.swp`, `tmp/`, `.obsidian/`).
+Создай директорию `~/learning-roadmap`, инициализируй git, создай `.gitignore` (игнорируй `.DS_Store`, `*.swp`, `tmp/`, `.obsidian/`, `.env`, `docs/`).
 
 ### 2. Структура директорий
 
@@ -41,28 +41,36 @@ learning-roadmap/
 ├── SETUP.md                     # этот файл — как воспроизвести систему
 ├── INDEX.md                     # карта проекта — Claude читает для навигации
 ├── MEMORY.md                    # персистентная память Claude между сессиями
+├── README.md                    # описание проекта для GitHub
 ├── learner-profile.md           # профиль ученика — стиль, предпочтения, фидбек
-├── weak-spots.md                # общие пробелы (кросс-трековые)
 ├── improvements.md              # идеи по улучшению системы (заполняется Claude)
+├── claude_telegram_bot.py       # Telegram-бот для взаимодействия с Claude
 ├── scripts/
-│   └── create-topic.sh          # создание темы (9 файлов за 1 вызов)
+│   └── create-topic.sh          # создание темы (11 файлов за 1 вызов)
+├── guides/                      # вспомогательные гайды (termius, ssh и т.д.)
 ├── .claude/
 │   ├── settings.json            # разрешения и хуки
+│   ├── hooks/
+│   │   └── session-start.sh     # приветственный баннер при старте сессии
 │   └── skills/                  # скиллы автоматизации
 │       ├── learn/SKILL.md       # Learn Mode — управляемый автопилот
 │       ├── save-session/SKILL.md # сохранение прогресса (чеклист 7 шагов)
+│       ├── complete-topic/SKILL.md # завершение темы (итоговая проверка + генерация файлов)
 │       ├── create-topic/SKILL.md # создание новых тем
 │       ├── rebalance/SKILL.md   # балансировка дерева тем
 │       ├── assess/SKILL.md      # оценка уровня
 │       └── verify/SKILL.md      # валидация и верификация файлов
 ├── templates/
-│   ├── topic/                   # 9 файлов листового узла
+│   ├── topic/                   # 11 файлов листового узла
 │   └── section/                 # 4 файла родительского узла
 ├── tracks/
 │   └── <track-name>/
 │       ├── roadmap.md
 │       ├── progress.md
 │       ├── dependency-graph.md
+│       ├── glossary.md
+│       ├── repetition-log.md
+│       ├── weak-spots.md
 │       └── topics/
 │           ├── 01-section-name/
 │           │   ├── overview.md          # описание раздела
@@ -73,7 +81,9 @@ learning-roadmap/
 │           │   │   ├── summary.md
 │           │   │   ├── cheatsheet.md
 │           │   │   ├── interview-questions.md
+│           │   │   ├── interview-answers.md
 │           │   │   ├── practice.md
+│           │   │   ├── practice-solutions.md
 │           │   │   ├── cases.md
 │           │   │   ├── diagram.md
 │           │   │   ├── resources.md
@@ -146,9 +156,9 @@ learning-roadmap/
 
 **Для другого трека** — сгенерируй аналогичную структуру, подходящую для выбранной технологии, сохраняя тот же формат (15 разделов, 4 уровня).
 
-### 4. Файлы каждой подтемы (9 штук)
+### 4. Файлы каждой подтемы (11 штук)
 
-Каждая подтема содержит 9 файлов со скелетной структурой:
+Каждая подтема содержит 11 файлов со скелетной структурой:
 
 **summary.md:**
 ```markdown
@@ -184,11 +194,20 @@ learning-roadmap/
 ## 🟡 Middle
 ## 🔴 Senior
 ## 🏛 Architect
+```
 
----
-<details><summary>Ответы</summary>
-<!-- ответы -->
+**interview-answers.md:**
+```markdown
+# [Тема] — Ответы на вопросы
+
+## Junior
+**1. [вопрос]**
+<details><summary>Ответ</summary>
+[ответ]
 </details>
+
+## Middle / Senior / Architect
+<!-- аналогично -->
 ```
 
 **practice.md:**
@@ -202,6 +221,19 @@ learning-roadmap/
 
 ## Код-ревью
 ## Рефакторинг
+```
+
+**practice-solutions.md:**
+```markdown
+# [Тема] — Подсказки и решения
+
+## Задача 1: [название]
+<details><summary>Подсказка</summary>
+[наводящая мысль]
+</details>
+<details><summary>Решение</summary>
+[концепция + код с пояснениями + альтернативы]
+</details>
 ```
 
 **cases.md:**
@@ -314,7 +346,8 @@ learning-roadmap/
 ### 9. INDEX.md
 
 Карта всех файлов проекта. Claude читает этот файл для навигации вместо сканирования директорий. Содержит:
-- Корневые файлы (CLAUDE.md, INDEX.md, SETUP.md, MEMORY.md, learner-profile.md, weak-spots.md, improvements.md)
+- Корневые файлы (CLAUDE.md, INDEX.md, SETUP.md, MEMORY.md, learner-profile.md, improvements.md)
+- Трековые файлы (tracks/dotnet/weak-spots.md)
 - Таблица скиллов с путями и триггерами
 - Таблица шаблонов
 - Для каждого раздела трека: родительские файлы + таблица подтем с путями
@@ -375,7 +408,7 @@ learning-roadmap/
 <!-- Claude заполняет на основе микрофидбека -->
 ```
 
-### 12. weak-spots.md
+### 12. tracks/dotnet/weak-spots.md
 
 ```markdown
 # Слабые места и пробелы
@@ -413,13 +446,57 @@ learning-roadmap/
     "deny": [],
     "defaultMode": "bypassPermissions"
   },
-  "hooks": {}
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/session-start.sh"
+          }
+        ]
+      }
+    ]
+  }
 }
 ```
 
-**Ключевое:** `bypassPermissions` — никаких системных подтверждений. Все файловые операции невидимы для ученика (через фоновых агентов).
+**Ключевое:**
+- `bypassPermissions` — никаких системных подтверждений. Все файловые операции невидимы для ученика (через фоновых агентов).
+- `SessionStart` hook — выводит приветственный баннер проекта при каждом старте сессии.
 
-### 17. CLAUDE.md
+### 17. .claude/hooks/session-start.sh
+
+```bash
+#!/bin/bash
+echo ""
+echo "╔═════════════════════════════════════════╗"
+echo "║       .NET/C# Learning Roadmap          ║"
+echo "║         Твой путь к архитектору         ║"
+echo "╚═════════════════════════════════════════╝"
+echo ""
+exit 0
+```
+
+### 18. tracks/\<track-name\>/glossary.md
+
+```markdown
+# Глоссарий — [Track Name]
+
+| Термин | Определение | Связанные темы |
+|--------|-------------|----------------|
+```
+
+### 19. tracks/\<track-name\>/repetition-log.md
+
+```markdown
+# Повторения — [Track Name]
+
+> Лог spaced repetition сессий. Claude генерирует уникальные вопросы по завершённым темам при startup.
+> Интервалы: 7 → 14 → 30 дней. При ❌ — сброс интервала до 7 дней.
+```
+
+### 21. CLAUDE.md
 
 Напиши CLAUDE.md с:
 - **Назначением** системы (ментор, интервьюер, наставник)
@@ -437,29 +514,30 @@ learning-roadmap/
   - Коммиты — ТОЛЬКО по команде
 - **Правилами обновления файлов** (таблица: событие → какие файлы обновить)
 - **Идеями по улучшению** (improvements.md, фоновая запись)
-- **Обязательными скиллами** (learn, save-session, create-topic, rebalance, assess, verify)
+- **Обязательными скиллами** (learn, save-session, complete-topic, create-topic, rebalance, assess, verify)
 
-### 18. Скиллы автоматизации
+### 22. Скиллы автоматизации
 
-Создай `.claude/skills/` с шестью скиллами:
+Создай `.claude/skills/` с семью скиллами:
 - `learn/SKILL.md` — запуск и ведение обучения (startup через агента, цикл, обновление файлов через фоновых агентов)
 - `save-session/SKILL.md` — чеклист 7 шагов (все через фонового агента, ученик видит только итог)
+- `complete-topic/SKILL.md` — завершение темы (итоговая проверка → оценка → генерация 6 файлов → мета-файлы → верификация)
 - `create-topic/SKILL.md` — создание новой темы (использует `scripts/create-topic.sh` + точечные правки мета-файлов)
 - `rebalance/SKILL.md` — разбиение большой темы на подтемы
 - `assess/SKILL.md` — оценка уровня через вопросы
 - `verify/SKILL.md` — валидация консистентности между файлами (7 чеклистов)
 
-### 19. Первый коммит
+### 23. Первый коммит
 
 ```bash
 git add -A && git commit -m "init: персональная система обучения (junior → architect)"
 ```
 
-### 20. GitHub
+### 24. GitHub
 
 Создай репозиторий на GitHub (public/private по настройке выше) и запуши.
 
-### 21. После создания
+### 25. После создания
 
 Выведи:
 - Краткую справку по всем командам
