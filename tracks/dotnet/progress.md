@@ -9,6 +9,9 @@
 | C# Fundamentals | Strings & Immutability | Junior | ⬜ не начата | 0 | — |
 | C# Fundamentals | Exceptions | Junior | ⬜ не начата | 0 | — |
 | C# Fundamentals | Nullable | Junior | ⬜ не начата | 0 | — |
+| C# Fundamentals | Extension Methods | Junior | ⬜ не начата | 0 | — |
+| C# Fundamentals | Pattern Matching | Junior | ⬜ не начата | 0 | — |
+| C# Fundamentals | Records & Structs | Junior | ⬜ не начата | 0 | — |
 | OOP & Language | Inheritance & Polymorphism | Junior | ⬜ не начата | 0 | — |
 | OOP & Language | Interfaces & Abstract | Junior | ⬜ не начата | 0 | — |
 | OOP & Language | Generics | Junior | ⬜ не начата | 0 | — |
@@ -16,17 +19,23 @@
 | OOP & Language | LINQ | Junior | ⬜ не начата | 0 | — |
 | OOP & Language | Expression Trees | Middle | ⬜ не начата | 0 | — |
 | OOP & Language | Reflection | Middle | ⬜ не начата | 0 | — |
+| OOP & Language | Iterators & yield | Middle | ⬜ не начата | 0 | — |
+| OOP & Language | Covariance & Contravariance | Middle | ⬜ не начата | 0 | — |
 | Collections | Arrays & Lists | Junior | ⬜ не начата | 0 | — |
 | Collections | Dictionary & HashSet | Junior | ⬜ не начата | 0 | — |
 | Collections | Concurrent Collections | Middle | ⬜ не начата | 0 | — |
 | Collections | Span & Memory | Middle | ⬜ не начата | 0 | — |
 | Collections | Custom Collections | Middle | ⬜ не начата | 0 | — |
+| Collections | Immutable Collections | Middle | ⬜ не начата | 0 | — |
+| Collections | Stack, Queue & PriorityQueue | Middle | ⬜ не начата | 0 | — |
 | Async & Multithreading | Threads & ThreadPool | Middle | ⬜ не начата | 0 | — |
 | Async & Multithreading | Task & async/await | Middle | ⬜ не начата | 0 | — |
 | Async & Multithreading | Synchronization Primitives | Middle | ⬜ не начата | 0 | — |
 | Async & Multithreading | Parallel & PLINQ | Middle | ⬜ не начата | 0 | — |
 | Async & Multithreading | Channels | Middle | ⬜ не начата | 0 | — |
 | Async & Multithreading | Cancellation Patterns | Middle | ⬜ не начата | 0 | — |
+| Async & Multithreading | Async Streams (IAsyncEnumerable) | Middle | ⬜ не начата | 0 | — |
+| Async & Multithreading | ValueTask | Middle | ⬜ не начата | 0 | — |
 | .NET Internals | CLR & JIT | Senior | ⬜ не начата | 0 | — |
 | .NET Internals | Assembly Loading | Senior | ⬜ не начата | 0 | — |
 | .NET Internals | GC Internals | Senior | ⬜ не начата | 0 | — |
@@ -40,6 +49,11 @@
 | ASP.NET Core | Minimal API | Middle | ⬜ не начата | 0 | — |
 | ASP.NET Core | SignalR & gRPC | Middle | ⬜ не начата | 0 | — |
 | ASP.NET Core | HTTP Clients & IHttpClientFactory | Middle | ✅ завершена | 4 | 2026-03-06 |
+| ASP.NET Core | Configuration & Options Pattern | Middle | ⬜ не начата | 0 | — |
+| ASP.NET Core | Logging & Structured Logs | Middle | ⬜ не начата | 0 | — |
+| ASP.NET Core | Background Services (IHostedService) | Middle | ⬜ не начата | 0 | — |
+| ASP.NET Core | Health Checks | Middle | ⬜ не начата | 0 | — |
+| ASP.NET Core | API Versioning | Middle | ⬜ не начата | 0 | — |
 | Data Access | EF Core Basics | Middle | ⬜ не начата | 0 | — |
 | Data Access | EF Core Advanced | Middle | ⬜ не начата | 0 | — |
 | Data Access | Dapper | Middle | ⬜ не начата | 0 | — |
@@ -50,10 +64,13 @@
 | Design Patterns | Structural | Middle | ⬜ не начата | 0 | — |
 | Design Patterns | Behavioral | Middle | ⬜ не начата | 0 | — |
 | Design Patterns | Patterns in .NET | Middle | ⬜ не начата | 0 | — |
+| Design Patterns | Concurrency Patterns | Middle | ⬜ не начата | 0 | — |
 | Architecture | SOLID | Senior | ⬜ не начата | 0 | — |
 | Architecture | Clean Architecture | Senior | ⬜ не начата | 0 | — |
 | Architecture | DDD | Senior | ⬜ не начата | 0 | — |
 | Architecture | CQRS & Event Sourcing | Senior | ⬜ не начата | 0 | — |
+| Architecture | Saga Pattern | Senior | ⬜ не начата | 0 | — |
+| Architecture | Outbox Pattern | Senior | ⬜ не начата | 0 | — |
 | Architecture | Microservices | Architect | ⬜ не начата | 0 | — |
 | Architecture | Modular Monolith | Architect | ⬜ не начата | 0 | — |
 | Architecture | Hexagonal / Ports & Adapters | Architect | ⬜ не начата | 0 | — |
@@ -61,6 +78,8 @@
 | System Design | Messaging & Queues | Senior | ⬜ не начата | 0 | — |
 | System Design | Caching Strategies | Senior | ⬜ не начата | 0 | — |
 | System Design | API Design | Senior | ⬜ не начата | 0 | — |
+| System Design | CAP Theorem | Senior | ⬜ не начата | 0 | — |
+| System Design | Circuit Breaker & Resilience | Senior | ⬜ не начата | 0 | — |
 | System Design | Load Balancing & Scaling | Architect | ⬜ не начата | 0 | — |
 | System Design | Database Sharding & Replication | Architect | ⬜ не начата | 0 | — |
 | System Design | Real-World Systems | Architect | ⬜ не начата | 0 | — |
@@ -79,10 +98,14 @@
 | Algorithms | Trees & Graphs | Middle | ⬜ не начата | 0 | — |
 | Algorithms | Dynamic Programming | Middle | ⬜ не начата | 0 | — |
 | Algorithms | Common Interview Problems | Middle | ⬜ не начата | 0 | — |
+| Algorithms | String Algorithms | Middle | ⬜ не начата | 0 | — |
+| Algorithms | Greedy Algorithms | Middle | ⬜ не начата | 0 | — |
 | Security | OWASP Top 10 | Senior | ⬜ не начата | 0 | — |
 | Security | Cryptography Basics | Senior | ⬜ не начата | 0 | — |
 | Security | Auth Patterns | Senior | ⬜ не начата | 0 | — |
 | Security | Secure Coding | Senior | ⬜ не начата | 0 | — |
+| Security | Data Protection API | Senior | ⬜ не начата | 0 | — |
+| Security | Secret Management | Senior | ⬜ не начата | 0 | — |
 | Leadership | Code Review Culture | Architect | ⬜ не начата | 0 | — |
 | Leadership | Technical Decisions | Architect | ⬜ не начата | 0 | — |
 | Leadership | Mentoring | Architect | ⬜ не начата | 0 | — |
@@ -93,8 +116,8 @@
 
 | Уровень | Всего тем | Изучено | % |
 |---------|-----------|---------|---|
-| 🟢 Junior | 16 | 0 | 0% |
-| 🟡 Middle | 35 | 1 | 3% |
-| 🔴 Senior | 22 | 0 | 0% |
+| 🟢 Junior | 19 | 0 | 0% |
+| 🟡 Middle | 49 | 1 | 2% |
+| 🔴 Senior | 28 | 0 | 0% |
 | 🏛 Architect | 12 | 0 | 0% |
-| **Итого** | **85** | **1** | **1%** |
+| **Итого** | **108** | **1** | **1%** |

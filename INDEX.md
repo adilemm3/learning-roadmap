@@ -49,7 +49,7 @@
 
 ### Разделы и подтемы
 
-#### 01-csharp-fundamentals (7 подтем, Junior)
+#### 01-csharp-fundamentals (10 подтем, Junior)
 
 Родительские файлы:
 | Файл | Путь |
@@ -68,8 +68,11 @@
 | Strings & Immutability | `tracks/dotnet/topics/01-csharp-fundamentals/05-strings-immutability/` |
 | Exceptions | `tracks/dotnet/topics/01-csharp-fundamentals/06-exceptions/` |
 | Nullable | `tracks/dotnet/topics/01-csharp-fundamentals/07-nullable/` |
+| Extension Methods | `tracks/dotnet/topics/01-csharp-fundamentals/08-extension-methods/` |
+| Pattern Matching | `tracks/dotnet/topics/01-csharp-fundamentals/09-pattern-matching/` |
+| Records & Structs | `tracks/dotnet/topics/01-csharp-fundamentals/10-records-structs/` |
 
-#### 02-oop-and-language (7 подтем, Junior → Middle)
+#### 02-oop-and-language (9 подтем, Junior → Middle)
 
 Родительские файлы:
 | Файл | Путь |
@@ -88,8 +91,10 @@
 | LINQ | `tracks/dotnet/topics/02-oop-and-language/05-linq/` |
 | Expression Trees | `tracks/dotnet/topics/02-oop-and-language/06-expression-trees/` |
 | Reflection | `tracks/dotnet/topics/02-oop-and-language/07-reflection/` |
+| Iterators & yield | `tracks/dotnet/topics/02-oop-and-language/08-iterators-yield/` |
+| Covariance & Contravariance | `tracks/dotnet/topics/02-oop-and-language/09-covariance-contravariance/` |
 
-#### 03-collections-data-structures (5 подтем, Junior → Middle)
+#### 03-collections-data-structures (7 подтем, Junior → Middle)
 
 Родительские файлы:
 | Файл | Путь |
@@ -106,8 +111,10 @@
 | Concurrent Collections | `tracks/dotnet/topics/03-collections-data-structures/03-concurrent-collections/` |
 | Span & Memory | `tracks/dotnet/topics/03-collections-data-structures/04-span-memory/` |
 | Custom Collections | `tracks/dotnet/topics/03-collections-data-structures/05-custom-collections/` |
+| Immutable Collections | `tracks/dotnet/topics/03-collections-data-structures/06-immutable-collections/` |
+| Stack, Queue & PriorityQueue | `tracks/dotnet/topics/03-collections-data-structures/07-stack-queue-priorityqueue/` |
 
-#### 04-async-multithreading (6 подтем, Middle)
+#### 04-async-multithreading (8 подтем, Middle)
 
 Родительские файлы:
 | Файл | Путь |
@@ -125,6 +132,8 @@
 | Parallel & PLINQ | `tracks/dotnet/topics/04-async-multithreading/04-parallel-plinq/` |
 | Channels | `tracks/dotnet/topics/04-async-multithreading/05-channels/` |
 | Cancellation Patterns | `tracks/dotnet/topics/04-async-multithreading/06-cancellation-patterns/` |
+| Async Streams (IAsyncEnumerable) | `tracks/dotnet/topics/04-async-multithreading/07-async-streams/` |
+| ValueTask | `tracks/dotnet/topics/04-async-multithreading/08-valuetask/` |
 
 #### 05-dotnet-internals (5 подтем, Senior)
 
@@ -144,7 +153,7 @@
 | Threading Model | `tracks/dotnet/topics/05-dotnet-internals/04-threading-model/` |
 | Performance Diagnostics | `tracks/dotnet/topics/05-dotnet-internals/05-performance-diagnostics/` |
 
-#### 06-asp-net-core (7 подтем, Middle)
+#### 06-asp-net-core (13 подтем, Middle)
 
 Родительские файлы:
 | Файл | Путь |
@@ -164,6 +173,11 @@
 | Minimal API | `tracks/dotnet/topics/06-asp-net-core/06-minimal-api/` |
 | SignalR & gRPC | `tracks/dotnet/topics/06-asp-net-core/07-signalr-grpc/` |
 | HTTP Clients & IHttpClientFactory | `tracks/dotnet/topics/06-asp-net-core/08-http-clients/` |
+| Configuration & Options Pattern | `tracks/dotnet/topics/06-asp-net-core/09-configuration-options/` |
+| Logging & Structured Logs | `tracks/dotnet/topics/06-asp-net-core/10-logging-structured/` |
+| Background Services (IHostedService) | `tracks/dotnet/topics/06-asp-net-core/11-background-services/` |
+| Health Checks | `tracks/dotnet/topics/06-asp-net-core/12-health-checks/` |
+| API Versioning | `tracks/dotnet/topics/06-asp-net-core/13-api-versioning/` |
 
 #### 07-data-access (6 подтем, Middle → Senior)
 
@@ -184,7 +198,7 @@
 | Migrations Strategies | `tracks/dotnet/topics/07-data-access/05-migrations-strategies/` |
 | NoSQL: Redis & MongoDB | `tracks/dotnet/topics/07-data-access/06-nosql-redis-mongo/` |
 
-#### 08-design-patterns (4 подтемы, Middle)
+#### 08-design-patterns (5 подтем, Middle)
 
 Родительские файлы:
 | Файл | Путь |
@@ -200,8 +214,9 @@
 | Structural | `tracks/dotnet/topics/08-design-patterns/02-structural/` |
 | Behavioral | `tracks/dotnet/topics/08-design-patterns/03-behavioral/` |
 | Patterns in .NET | `tracks/dotnet/topics/08-design-patterns/04-patterns-in-dotnet/` |
+| Concurrency Patterns | `tracks/dotnet/topics/08-design-patterns/05-concurrency-patterns/` |
 
-#### 09-architecture (7 подтем, Senior → Architect)
+#### 09-architecture (9 подтем, Senior → Architect)
 
 Родительские файлы:
 | Файл | Путь |
@@ -220,8 +235,10 @@
 | Microservices | `tracks/dotnet/topics/09-architecture/05-microservices/` |
 | Modular Monolith | `tracks/dotnet/topics/09-architecture/06-modular-monolith/` |
 | Hexagonal / Ports & Adapters | `tracks/dotnet/topics/09-architecture/07-hexagonal-ports-adapters/` |
+| Saga Pattern | `tracks/dotnet/topics/09-architecture/08-saga-pattern/` |
+| Outbox Pattern | `tracks/dotnet/topics/09-architecture/09-outbox-pattern/` |
 
-#### 10-system-design (7 подтем, Senior → Architect)
+#### 10-system-design (9 подтем, Senior → Architect)
 
 Родительские файлы:
 | Файл | Путь |
@@ -240,6 +257,8 @@
 | Load Balancing & Scaling | `tracks/dotnet/topics/10-system-design/05-load-balancing-scaling/` |
 | Database Sharding & Replication | `tracks/dotnet/topics/10-system-design/06-database-sharding-replication/` |
 | Real-World Systems | `tracks/dotnet/topics/10-system-design/07-real-world-systems/` |
+| CAP Theorem | `tracks/dotnet/topics/10-system-design/08-cap-theorem/` |
+| Circuit Breaker & Resilience | `tracks/dotnet/topics/10-system-design/09-circuit-breaker-resilience/` |
 
 #### 11-testing (5 подтем, Middle → Senior)
 
@@ -277,7 +296,7 @@
 | Monitoring & Logging | `tracks/dotnet/topics/12-devops-infrastructure/04-monitoring-logging/` |
 | Cloud: Azure & AWS | `tracks/dotnet/topics/12-devops-infrastructure/05-cloud-azure-aws/` |
 
-#### 13-algorithms (5 подтем, Junior → Middle)
+#### 13-algorithms (7 подтем, Junior → Middle)
 
 Родительские файлы:
 | Файл | Путь |
@@ -294,8 +313,10 @@
 | Trees & Graphs | `tracks/dotnet/topics/13-algorithms/03-trees-graphs/` |
 | Dynamic Programming | `tracks/dotnet/topics/13-algorithms/04-dynamic-programming/` |
 | Common Interview Problems | `tracks/dotnet/topics/13-algorithms/05-common-interview-problems/` |
+| String Algorithms | `tracks/dotnet/topics/13-algorithms/06-string-algorithms/` |
+| Greedy Algorithms | `tracks/dotnet/topics/13-algorithms/07-greedy-algorithms/` |
 
-#### 14-security (4 подтемы, Senior)
+#### 14-security (6 подтем, Senior)
 
 Родительские файлы:
 | Файл | Путь |
@@ -311,6 +332,8 @@
 | Cryptography Basics | `tracks/dotnet/topics/14-security/02-cryptography-basics/` |
 | Auth Patterns | `tracks/dotnet/topics/14-security/03-auth-patterns/` |
 | Secure Coding | `tracks/dotnet/topics/14-security/04-secure-coding/` |
+| Data Protection API | `tracks/dotnet/topics/14-security/05-data-protection-api/` |
+| Secret Management | `tracks/dotnet/topics/14-security/06-secret-management/` |
 
 #### 15-leadership-soft-skills (5 подтем, Architect)
 

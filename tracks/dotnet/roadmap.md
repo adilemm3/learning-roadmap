@@ -10,6 +10,9 @@
 - [ ] 05-strings-immutability — зависит от: value-vs-reference
 - [ ] 06-exceptions — зависит от: type-system
 - [ ] 07-nullable — зависит от: value-vs-reference
+- [ ] 08-extension-methods — зависит от: type-system, interfaces-abstract
+- [ ] 09-pattern-matching — зависит от: type-system, value-vs-reference
+- [ ] 10-records-structs — зависит от: value-vs-reference, type-system
 
 ### 2. OOP & Language (базовые)
 - [ ] 01-inheritance-polymorphism — зависит от: type-system
@@ -33,11 +36,15 @@
 ### 5. OOP & Language (продвинутые)
 - [ ] 06-expression-trees — зависит от: linq, delegates-events
 - [ ] 07-reflection — зависит от: type-system, generics
+- [ ] 08-iterators-yield — зависит от: generics, interfaces-abstract
+- [ ] 09-covariance-contravariance — зависит от: generics, interfaces-abstract
 
 ### 6. Collections (продвинутые)
 - [ ] 03-concurrent-collections — зависит от: dictionary-hashset, threads-threadpool
 - [ ] 04-span-memory — зависит от: memory-stack-heap, arrays-lists
 - [ ] 05-custom-collections — зависит от: generics, interfaces-abstract
+- [ ] 06-immutable-collections — зависит от: arrays-lists, concurrent-collections
+- [ ] 07-stack-queue-priorityqueue — зависит от: arrays-lists, generics
 
 ### 7. Async & Multithreading
 - [ ] 01-threads-threadpool — зависит от: memory-stack-heap, delegates-events
@@ -46,6 +53,8 @@
 - [ ] 04-parallel-plinq — зависит от: task-async-await, linq
 - [ ] 05-channels — зависит от: task-async-await
 - [ ] 06-cancellation-patterns — зависит от: task-async-await
+- [ ] 07-async-streams — зависит от: task-async-await, generics
+- [ ] 08-valuetask — зависит от: task-async-await
 
 ### 8. ASP.NET Core
 - [ ] 01-middleware-pipeline — зависит от: delegates-events, task-async-await
@@ -56,6 +65,11 @@
 - [ ] 06-minimal-api — зависит от: routing-controllers, dependency-injection
 - [ ] 07-signalr-grpc — зависит от: task-async-await, middleware-pipeline
 - [ ] 08-http-clients — HTTP Clients & IHttpClientFactory, typed/named clients, Polly, тестирование. Зависит от: Dependency Injection, Task & async/await
+- [ ] 09-configuration-options — зависит от: dependency-injection
+- [ ] 10-logging-structured — зависит от: dependency-injection, middleware-pipeline
+- [ ] 11-background-services — зависит от: dependency-injection, task-async-await
+- [ ] 12-health-checks — зависит от: middleware-pipeline, dependency-injection
+- [ ] 13-api-versioning — зависит от: routing-controllers, minimal-api
 
 ### 9. Data Access (базовые)
 - [ ] 01-ef-core-basics — зависит от: linq, dependency-injection
@@ -68,6 +82,7 @@
 - [ ] 02-structural — зависит от: interfaces-abstract, generics
 - [ ] 03-behavioral — зависит от: delegates-events, interfaces-abstract
 - [ ] 04-patterns-in-dotnet — зависит от: creational, structural, behavioral
+- [ ] 05-concurrency-patterns — зависит от: behavioral, task-async-await
 
 ### 11. Testing (базовые)
 - [ ] 01-unit-testing — зависит от: dependency-injection, interfaces-abstract
@@ -78,6 +93,8 @@
 - [ ] 03-trees-graphs — зависит от: complexity-big-o, generics
 - [ ] 04-dynamic-programming — зависит от: complexity-big-o
 - [ ] 05-common-interview-problems — зависит от: trees-graphs, dynamic-programming
+- [ ] 06-string-algorithms — зависит от: complexity-big-o, arrays-lists
+- [ ] 07-greedy-algorithms — зависит от: complexity-big-o
 
 ---
 
@@ -99,12 +116,16 @@
 - [ ] 02-clean-architecture — зависит от: solid, dependency-injection
 - [ ] 03-ddd — зависит от: clean-architecture
 - [ ] 04-cqrs-event-sourcing — зависит от: ddd, messaging-queues
+- [ ] 08-saga-pattern — зависит от: cqrs-event-sourcing, messaging-queues
+- [ ] 09-outbox-pattern — зависит от: ef-core-advanced, messaging-queues
 
 ### 16. System Design (базовые)
 - [ ] 01-fundamentals — зависит от: clean-architecture
 - [ ] 02-messaging-queues — зависит от: task-async-await, fundamentals
 - [ ] 03-caching-strategies — зависит от: nosql-redis-mongo, fundamentals
 - [ ] 04-api-design — зависит от: routing-controllers, fundamentals
+- [ ] 08-cap-theorem — зависит от: fundamentals
+- [ ] 09-circuit-breaker-resilience — зависит от: http-clients, fundamentals
 
 ### 17. Testing (продвинутые)
 - [ ] 04-tdd-bdd — зависит от: unit-testing, mocking-strategies
@@ -120,6 +141,8 @@
 - [ ] 02-cryptography-basics — зависит от: type-system
 - [ ] 03-auth-patterns — зависит от: authentication-authorization, owasp-top10
 - [ ] 04-secure-coding — зависит от: owasp-top10
+- [ ] 05-data-protection-api — зависит от: authentication-authorization, cryptography-basics
+- [ ] 06-secret-management — зависит от: dependency-injection, configuration-options
 
 ---
 
