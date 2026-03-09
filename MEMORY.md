@@ -24,5 +24,5 @@ dotnet
 ## Заметки
 - Проект создан 2026-03-05
 - Структура: tracks/ с треками по технологиям
-- .NET трек: 15 разделов, 85 подтем
+- .NET трек: 15 разделов, 108 подтем
 - Скиллы: learn, save-session, create-topic, rebalance, assess, verify
