@@ -66,7 +66,7 @@ dotnet
 ## Заметки
 - Проект создан $(date +%Y-%m-%d)
 - Структура: tracks/ с треками по технологиям
-- .NET трек: 15 разделов, 85 подтем
+- .NET трек: 15 разделов, 108 подтем
 - Скиллы: learn, save-session, create-topic, rebalance, assess, verify
 MEMEOF
 

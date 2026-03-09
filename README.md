@@ -79,11 +79,12 @@ tracks/dotnet/
     └── ...
 ```
 
-**15 разделов, 85 подтем, 4 уровня:** Junior → Middle → Senior → Architect
+**15 разделов, 108 подтем, 4 уровня:** Junior → Middle → Senior → Architect
 
 ## Учиться с телефона
 
 См. [Claude Code с телефона](guides/termius-ssh-setup.md) — управляй Mac-терминалом с iPhone/Android через SSH + Tailscale.
+Или настрой [Telegram-бота](guides/telegram-bot-setup.md) — пиши прямо в Telegram, без SSH.
 
 ## Хочешь свою копию?
 
