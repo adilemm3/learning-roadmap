@@ -5,74 +5,84 @@ set -euo pipefail
 
 TRACK="dotnet"
 TOPICS_DIR="tracks/${TRACK}/topics"
+TOPIC_TEMPLATES="templates/topic"
+SECTION_TEMPLATES="templates/section"
 
 echo "Сброс личных данных для template..."
 
-# ── session.md ─────────────────────────────────────────────────────────────
-find "$TOPICS_DIR" -name "session.md" | while read -r f; do
-  title=$(head -1 "$f")
-  printf '%s\n\n<!-- Полный диалог всех учебных сессий по этой теме -->\n' "$title" > "$f"
+# ── 1. Все 11 файлов каждой подтемы ────────────────────────────────────────
+# Для каждой директории подтемы: читаем название из summary.md, сбрасываем все файлы
+find "$TOPICS_DIR" -mindepth 2 -maxdepth 2 -type d | while read -r topic_dir; do
+  summary="$topic_dir/summary.md"
+  [ -f "$summary" ] || continue
+
+  # Извлечь название темы из первой строки summary.md: "# Type System" → "Type System"
+  topic_name=$(head -1 "$summary" | sed 's/^# //')
+  # Извлечь уровень и зависимости из строк 2-3
+  level=$(sed -n '2p' "$summary" | sed 's/^> Уровень: //')
+  deps=$(sed -n '3p' "$summary" | sed 's/^> Зависимости: //')
+
+  # Сбросить каждый файл шаблоном из templates/topic/
+  for tmpl in "$TOPIC_TEMPLATES"/*.md; do
+    filename=$(basename "$tmpl")
+    target="$topic_dir/$filename"
+    content=$(cat "$tmpl")
+    # Заменить плейсхолдеры
+    content="${content//\{\{TOPIC_NAME\}\}/$topic_name}"
+    content="${content//\{\{LEVEL\}\}/$level}"
+    content="${content//\{\{DEPENDENCIES\}\}/$deps}"
+    printf '%s\n' "$content" > "$target"
+  done
 done
 
-# ── learning-plan.md ────────────────────────────────────────────────────────
-find "$TOPICS_DIR" -name "learning-plan.md" | while read -r f; do
-  title=$(head -1 "$f")
-  cat > "$f" << 'TMPL'
-TITLE_PLACEHOLDER
-> Статус: ⬜ не начата
-> Блок: 0/N | Последняя сессия: —
+# ── 2. Section-level progress.md ────────────────────────────────────────────
+find "$TOPICS_DIR" -mindepth 1 -maxdepth 1 -type d | while read -r section_dir; do
+  prog="$section_dir/progress.md"
+  [ -f "$prog" ] || continue
 
-## Калибровка
-<!-- Заполняется при первом входе в тему -->
-- Базовые концепции: ⬜
-- Средний уровень: ⬜
-- Продвинутый: ⬜
-→ Начинаем с блока: —
+  # Извлечь название раздела из первой строки
+  section_name=$(head -1 "$prog" | sed 's/^# //' | sed 's/ — Прогресс.*//')
 
-## Блоки
+  # Сбросить статусы: оставить строки с подтемами, обнулить данные
+  python3 - "$prog" "$section_name" << 'PYEOF'
+import sys, re
+path, section_name = sys.argv[1], sys.argv[2]
+with open(path) as f:
+    lines = f.readlines()
 
-<!-- Claude генерирует блоки при первом входе в тему на основе калибровки -->
-TMPL
-  sed -i '' "s|TITLE_PLACEHOLDER|${title}|" "$f"
+result = []
+for line in lines:
+    # Строка таблицы с данными (содержит |): сбросить статус, уверенность, дату
+    if re.match(r'^\|\s*\d+\s*\|', line):
+        parts = line.split('|')
+        if len(parts) >= 6:
+            parts[3] = ' ⬜ '         # статус
+            parts[4] = ' — '           # уверенность
+            parts[5] = ' — '           # дата
+            line = '|'.join(parts)
+    result.append(line)
+
+with open(path, 'w') as f:
+    f.writelines(result)
+PYEOF
 done
 
-# ── summary.md ──────────────────────────────────────────────────────────────
-find "$TOPICS_DIR" -name "summary.md" | while read -r f; do
-  header=$(head -3 "$f")
-  cat > "$f" << 'TMPL'
-HEADER_PLACEHOLDER
+# ── 3. Track-level progress.md ──────────────────────────────────────────────
+python3 - << 'PYEOF'
+import re
+path = "tracks/dotnet/progress.md"
+with open(path) as f:
+    content = f.read()
+content = re.sub(r'\| (🟡 в процессе|✅ завершена)', '| ⬜ не начата', content)
+content = re.sub(r'\| \d (\|.*?Последняя сессия)', r'| 0 \1', content)  # уверенность
+content = re.sub(r'(?<=\| 0 \| )\d{4}-\d{2}-\d{2}', '—', content)
+content = re.sub(r'(\| (?:🟢 Junior|🟡 Middle|🔴 Senior|🏛 Architect) \| \d+ \| )\d+( \| )\d+%', r'\g<1>0\g<2>0%', content)
+content = re.sub(r'(\| \*\*Итого\*\* \| \*\*\d+\*\* \| \*\*)\d+(\*\* \| )\d+%', r'\g<1>0\g<2>0%', content)
+with open(path, 'w') as f:
+    f.write(content)
+PYEOF
 
-## Ключевые концепции
-<!-- bullet points с основными идеями -->
-
-## Объяснение простыми словами
-<!-- аналогия из жизни -->
-
-## Примеры кода
-```csharp
-// TODO: добавить примеры
-```
-
-## Частые вопросы на собесе
-<!-- Q&A формат -->
-
-## Подводные камни и нюансы
-<!-- на что обращать внимание -->
-
-## Связь с другими темами
-<!-- как эта тема связана с остальными -->
-TMPL
-  # Заменяем плейсхолдер на реальный заголовок (три строки)
-  python3 -c "
-import sys
-content = open('$f').read()
-content = content.replace('HEADER_PLACEHOLDER', '''${header}''', 1)
-open('$f', 'w').write(content)
-"
-done
-
-# ── Файлы трека ─────────────────────────────────────────────────────────────
-# weak-spots.md
+# ── 4. Трековые файлы ───────────────────────────────────────────────────────
 cat > "tracks/${TRACK}/weak-spots.md" << 'EOF'
 # Слабые места и пробелы
 
@@ -83,7 +93,6 @@ cat > "tracks/${TRACK}/weak-spots.md" << 'EOF'
 <!-- формат: - [x] [Тема] описание (закрыто: дата) -->
 EOF
 
-# repetition-log.md
 cat > "tracks/${TRACK}/repetition-log.md" << 'EOF'
 # Повторения — .NET/C#
 
@@ -98,31 +107,18 @@ cat > "tracks/${TRACK}/repetition-log.md" << 'EOF'
 -->
 EOF
 
-# glossary.md — оставить только заголовок таблицы
-head -4 "tracks/${TRACK}/glossary.md" > /tmp/glossary_header.md
-mv /tmp/glossary_header.md "tracks/${TRACK}/glossary.md"
-
-# progress.md — сбросить статусы и уверенность
+# glossary — только заголовок таблицы
 python3 - << 'PYEOF'
-import re
-with open("tracks/dotnet/progress.md") as f:
-    content = f.read()
-# Заменить статусы в таблице: 🟡/✅ → ⬜, уверенность → 0, дату → —
-content = re.sub(r'\| (🟡 в процессе|✅ завершена)', '| ⬜ не начата', content)
-content = re.sub(r'\| (\d) \|', '| 0 |', content)
-content = re.sub(r'\| (\d{4}-\d{2}-\d{2}) \|', '| — |', content)
-# Сводная таблица
-content = re.sub(r'(\| 🟢 Junior \| \d+ \| )\d+( \| )\d+(%)', r'\g<1>0\g<2>0\g<3>', content)
-content = re.sub(r'(\| 🟡 Middle \| \d+ \| )\d+( \| )\d+(%)', r'\g<1>0\g<2>0\g<3>', content)
-content = re.sub(r'(\| 🔴 Senior \| \d+ \| )\d+( \| )\d+(%)', r'\g<1>0\g<2>0\g<3>', content)
-content = re.sub(r'(\| 🏛 Architect \| \d+ \| )\d+( \| )\d+(%)', r'\g<1>0\g<2>0\g<3>', content)
-content = re.sub(r'(\| \*\*Итого\*\* \| \*\*\d+\*\* \| \*\*)\d+(\*\* \| )\d+(%)', r'\g<1>0\g<2>0\g<3>', content)
-with open("tracks/dotnet/progress.md", "w") as f:
-    f.write(content)
+with open("tracks/dotnet/glossary.md") as f:
+    lines = f.readlines()
+# Оставить заголовок и строку-разделитель таблицы
+header = [l for l in lines[:6] if l.strip()][:4]
+with open("tracks/dotnet/glossary.md", 'w') as f:
+    f.writelines(header)
+    f.write('\n')
 PYEOF
 
-# ── Корневые файлы ──────────────────────────────────────────────────────────
-# MEMORY.md
+# ── 5. Корневые файлы ────────────────────────────────────────────────────────
 cat > "MEMORY.md" << 'EOF'
 # Learning Roadmap — Memory
 
@@ -153,7 +149,6 @@ dotnet
 - Скиллы: learn, save-session, create-topic, rebalance, assess, verify
 EOF
 
-# learner-profile.md
 cat > "learner-profile.md" << 'EOF'
 # Профиль ученика
 
@@ -179,7 +174,6 @@ cat > "learner-profile.md" << 'EOF'
 <!-- Claude заполняет на основе микрофидбека -->
 EOF
 
-# improvements.md
 cat > "improvements.md" << 'EOF'
 # Идеи по улучшению системы обучения
 
@@ -196,16 +190,27 @@ cat > "improvements.md" << 'EOF'
 <!-- Формат: - YYYY-MM-DD | описание (причина отклонения) -->
 EOF
 
-# Заменить "Адиль" → [YOUR_NAME] в CLAUDE.md
+# ── 6. Имена в CLAUDE.md и скиллах ──────────────────────────────────────────
+# CLAUDE.md
 sed -i '' \
   -e 's/Адиль/[YOUR_NAME]/g' \
   -e 's/adilemm3/[GITHUB_USERNAME]/g' \
   CLAUDE.md
 
+# SKILL.md файлы — заменить имя в приветствиях и примерах диалогов
+find .claude/skills -name "*.md" | while read -r skill; do
+  sed -i '' 's/Адиль/[YOUR_NAME]/g' "$skill"
+done
+
 echo ""
-echo "✓ Сброс завершён. Теперь:"
-echo "  git checkout -b template"
-echo "  git add -A && git commit -m 'chore: template — чистое состояние для новых пользователей'"
-echo "  git push -u origin template"
+echo "✓ Сброс завершён. Файлы затронуты:"
+echo "  - Все 11 файлов каждой подтемы → шаблоны"
+echo "  - Section progress.md → ⬜"
+echo "  - Track progress.md → ⬜"
+echo "  - weak-spots, repetition-log, glossary → пустые"
+echo "  - MEMORY.md, learner-profile.md, improvements.md → чистые"
+echo "  - CLAUDE.md + skills/*.md → [YOUR_NAME]"
 echo ""
-echo "  Затем на GitHub: Settings → репозиторий → ✓ Template repository"
+echo "Следующий шаг:"
+echo "  git add -A && git commit -m 'chore: template — чистое состояние'"
+echo "  git push origin template"
