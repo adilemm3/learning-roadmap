@@ -10,8 +10,8 @@
 Перед отправкой Claude — заполни эти поля:
 
 ```yaml
-Имя: Адиль                          # ← замени на своё
-GitHub username: adilemm3            # ← замени на свой
+Имя: [YOUR_NAME]                     # ← замени на своё
+GitHub username: [GITHUB_USERNAME]   # ← замени на свой
 Название проекта: learning-roadmap   # ← можешь изменить
 Директория: ~/learning-roadmap       # ← где создать
 GitHub: public                       # public или private
