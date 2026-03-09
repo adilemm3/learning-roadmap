@@ -2,7 +2,7 @@
 
 | Раздел | Тема | Уровень | Статус | Уверенность (1-5) | Последняя сессия |
 |--------|------|---------|--------|--------------------|------------------|
-| C# Fundamentals | Type System | Junior | 🟡 в процессе | 2 | 2026-03-08 |
+| C# Fundamentals | Type System | Junior | ⬜ не начата | 0 | — |
 | C# Fundamentals | Value vs Reference | Junior | ⬜ не начата | 0 | — |
 | C# Fundamentals | Memory: Stack & Heap | Junior | ⬜ не начата | 0 | — |
 | C# Fundamentals | Garbage Collector | Junior | ⬜ не начата | 0 | — |
@@ -39,7 +39,7 @@
 | ASP.NET Core | Filters & Model Binding | Middle | ⬜ не начата | 0 | — |
 | ASP.NET Core | Minimal API | Middle | ⬜ не начата | 0 | — |
 | ASP.NET Core | SignalR & gRPC | Middle | ⬜ не начата | 0 | — |
-| ASP.NET Core | HTTP Clients & IHttpClientFactory | Middle | ✅ завершена | 4 | 2026-03-06 |
+| ASP.NET Core | HTTP Clients & IHttpClientFactory | Middle | ⬜ не начата | 0 | — |
 | Data Access | EF Core Basics | Middle | ⬜ не начата | 0 | — |
 | Data Access | EF Core Advanced | Middle | ⬜ не начата | 0 | — |
 | Data Access | Dapper | Middle | ⬜ не начата | 0 | — |
@@ -94,7 +94,7 @@
 | Уровень | Всего тем | Изучено | % |
 |---------|-----------|---------|---|
 | 🟢 Junior | 16 | 0 | 0% |
-| 🟡 Middle | 35 | 1 | 3% |
+| 🟡 Middle | 35 | 0 | 0% |
 | 🔴 Senior | 22 | 0 | 0% |
 | 🏛 Architect | 12 | 0 | 0% |
 | **Итого** | **85** | **1** | **1%** |
