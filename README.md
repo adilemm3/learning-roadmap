@@ -87,4 +87,14 @@ tracks/dotnet/
 
 ## Хочешь свою копию?
 
-См. [SETUP.md](SETUP.md) — отправь его содержимое в Claude Code и он создаст систему с нуля под твою технологию.
+1. Нажми **«Use this template»** (кнопка вверху страницы) → создай свой репозиторий
+2. Клонируй и персонализируй:
+
+```bash
+git clone https://github.com/[ТВО_ИМЯUSERNAME]/learning-roadmap.git
+cd learning-roadmap
+bash scripts/personalize.sh
+claude
+```
+
+Скрипт спросит твоё имя — и система готова. Прогресса нет, всё чисто.

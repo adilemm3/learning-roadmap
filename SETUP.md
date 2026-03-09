@@ -125,7 +125,7 @@ learning-roadmap/
 06-asp-net-core/
     01-middleware-pipeline, 02-dependency-injection, 03-routing-controllers,
     04-authentication-authorization, 05-filters-model-binding, 06-minimal-api,
-    07-signalr-grpc
+    07-signalr-grpc, 08-http-clients
 07-data-access/
     01-ef-core-basics, 02-ef-core-advanced, 03-dapper,
     04-sql-optimization, 05-migrations-strategies, 06-nosql-redis-mongo
@@ -190,10 +190,12 @@ learning-roadmap/
 ```markdown
 # [Тема] — Вопросы для собеседования
 
-## 🟢 Junior
-## 🟡 Middle
-## 🔴 Senior
-## 🏛 Architect
+> Ответы → `interview-answers.md`
+
+## Junior
+## Middle
+## Senior
+## Architect
 ```
 
 **interview-answers.md:**
@@ -445,38 +447,13 @@ learning-roadmap/
     ],
     "deny": [],
     "defaultMode": "bypassPermissions"
-  },
-  "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/session-start.sh"
-          }
-        ]
-      }
-    ]
   }
 }
 ```
 
 **Ключевое:**
 - `bypassPermissions` — никаких системных подтверждений. Все файловые операции невидимы для ученика (через фоновых агентов).
-- `SessionStart` hook — выводит приветственный баннер проекта при каждом старте сессии.
-
-### 17. .claude/hooks/session-start.sh
-
-```bash
-#!/bin/bash
-echo ""
-echo "╔═════════════════════════════════════════╗"
-echo "║       .NET/C# Learning Roadmap          ║"
-echo "║         Твой путь к архитектору         ║"
-echo "╚═════════════════════════════════════════╝"
-echo ""
-exit 0
-```
+- Приветственный баннер проекта выводится Claude из инструкций в `CLAUDE.md` при каждом старте сессии — хук не нужен.
 
 ### 18. tracks/\<track-name\>/glossary.md
 
@@ -487,7 +464,7 @@ exit 0
 |--------|-------------|----------------|
 ```
 
-### 19. tracks/\<track-name\>/repetition-log.md
+### 19. tracks/\<track-name\>/repetition-log.md (уже есть)
 
 ```markdown
 # Повторения — [Track Name]
@@ -496,12 +473,12 @@ exit 0
 > Интервалы: 7 → 14 → 30 дней. При ❌ — сброс интервала до 7 дней.
 ```
 
-### 21. CLAUDE.md
+### 20. CLAUDE.md
 
 Напиши CLAUDE.md с:
 - **Назначением** системы (ментор, интервьюер, наставник)
 - **Структурой проекта** (полное дерево файлов)
-- **Startup Protocol** (5 шагов при каждом входе + приветственный баннер проекта)
+- **Startup Protocol** (8 шагов при каждом входе + приветственный баннер проекта выводится Claude из инструкций)
 - **Принципами** (русский язык, аналогия → теория → код, контрольные вопросы, мобильный формат, ★ Insight)
 - **Learn Mode** (вход, цикл, команды)
 - **Другими режимами** (шпаргалка, вопросы, практика, кейс, схема, карточки, собес, аналитика)
@@ -516,28 +493,28 @@ exit 0
 - **Идеями по улучшению** (improvements.md, фоновая запись)
 - **Обязательными скиллами** (learn, save-session, complete-topic, create-topic, rebalance, assess, verify)
 
-### 22. Скиллы автоматизации
+### 21. Скиллы автоматизации
 
 Создай `.claude/skills/` с семью скиллами:
 - `learn/SKILL.md` — запуск и ведение обучения (startup через агента, цикл, обновление файлов через фоновых агентов)
 - `save-session/SKILL.md` — чеклист 7 шагов (все через фонового агента, ученик видит только итог)
-- `complete-topic/SKILL.md` — завершение темы (итоговая проверка → оценка → генерация 6 файлов → мета-файлы → верификация)
+- `complete-topic/SKILL.md` — завершение темы (итоговая проверка → оценка → генерация 9 файлов → мета-файлы → верификация). Файлы: cheatsheet, interview-questions, interview-answers, practice, practice-solutions, cases, diagram, resources, flashcards
 - `create-topic/SKILL.md` — создание новой темы (использует `scripts/create-topic.sh` + точечные правки мета-файлов)
 - `rebalance/SKILL.md` — разбиение большой темы на подтемы
 - `assess/SKILL.md` — оценка уровня через вопросы
 - `verify/SKILL.md` — валидация консистентности между файлами (7 чеклистов)
 
-### 23. Первый коммит
+### 22. Первый коммит
 
 ```bash
 git add -A && git commit -m "init: персональная система обучения (junior → architect)"
 ```
 
-### 24. GitHub
+### 23. GitHub
 
 Создай репозиторий на GitHub (public/private по настройке выше) и запуши.
 
-### 25. После создания
+### 24. После создания
 
 Выведи:
 - Краткую справку по всем командам
