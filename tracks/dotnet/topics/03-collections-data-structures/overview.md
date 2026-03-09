@@ -11,12 +11,16 @@
 | 3 | Concurrent Collections | Потокобезопасные коллекции, ConcurrentDictionary |
 | 4 | Span & Memory | Span<T>, Memory<T>, stackalloc, производительность |
 | 5 | Custom Collections | Создание своих коллекций, IEnumerable<T>, итераторы |
+| 6 | Immutable Collections | ImmutableList, ImmutableDictionary, thread-safe by design |
+| 7 | Stack, Queue & PriorityQueue | Stack<T>, Queue<T>, PriorityQueue<T,P> (.NET 6+) |
 
 ## Порядок изучения
 Generics → Arrays & Lists → Dictionary & HashSet
 Threads → Concurrent Collections
 Memory: Stack & Heap + Arrays & Lists → Span & Memory
 Generics + Interfaces → Custom Collections
+Arrays & Lists + Concurrent Collections → Immutable Collections
+Arrays & Lists + Generics → Stack, Queue & PriorityQueue
 
 ## Связи с другими разделами
 Зависит от Generics, Interfaces. Используется везде. Concurrent Collections требует знания Threads.

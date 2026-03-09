@@ -13,6 +13,8 @@
 | 5 | Load Balancing & Scaling | Балансировка, горизонтальное/вертикальное масштабирование |
 | 6 | Database Sharding & Replication | Шардирование, репликация, partitioning |
 | 7 | Real-World Systems | Разбор реальных архитектур (URL shortener, chat, feed) |
+| 8 | CAP Theorem | CAP, consistency models, eventual consistency, PACELC |
+| 9 | Circuit Breaker & Resilience | Polly, circuit breaker, retry, bulkhead patterns |
 
 ## Порядок изучения
 Clean Architecture → Fundamentals → Messaging & Queues
@@ -21,6 +23,8 @@ Routing & Controllers + Fundamentals → API Design
 Fundamentals + Kubernetes → Load Balancing & Scaling
 SQL Optimization + Fundamentals → Database Sharding & Replication
 Все подтемы → Real-World Systems
+Fundamentals → CAP Theorem
+HTTP Clients + Fundamentals → Circuit Breaker & Resilience
 
 ## Связи с другими разделами
 Зависит от Architecture, Data Access, DevOps. Итоговый раздел для Architect уровня.

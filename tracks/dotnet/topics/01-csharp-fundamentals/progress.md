@@ -9,3 +9,6 @@
 | 5 | Strings & Immutability | ⬜ | — | — |
 | 6 | Exceptions | ⬜ | — | — |
 | 7 | Nullable | ⬜ | — | — |
+| 8 | Extension Methods | ⬜ | — | — |
+| 9 | Pattern Matching | ⬜ | — | — |
+| 10 | Records & Structs | ⬜ | — | — |

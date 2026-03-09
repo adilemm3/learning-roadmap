@@ -10,3 +10,8 @@
 | 6 | Minimal API | ⬜ | — | — |
 | 7 | SignalR & gRPC | ⬜ | — | — |
 | 8 | HTTP Clients & IHttpClientFactory | ⬜ | — | — |
+| 9 | Configuration & Options Pattern | ⬜ | — | — |
+| 10 | Logging & Structured Logs | ⬜ | — | — |
+| 11 | Background Services (IHostedService) | ⬜ | — | — |
+| 12 | Health Checks | ⬜ | — | — |
+| 13 | API Versioning | ⬜ | — | — |

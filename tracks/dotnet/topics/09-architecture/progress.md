@@ -9,3 +9,5 @@
 | 5 | Microservices | ⬜ | — | — |
 | 6 | Modular Monolith | ⬜ | — | — |
 | 7 | Hexagonal / Ports & Adapters | ⬜ | — | — |
+| 8 | Saga Pattern | ⬜ | — | — |
+| 9 | Outbox Pattern | ⬜ | — | — |

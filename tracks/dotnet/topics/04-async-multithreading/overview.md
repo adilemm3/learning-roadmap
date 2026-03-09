@@ -12,12 +12,16 @@
 | 4 | Parallel & PLINQ | Parallel.ForEach, PLINQ, параллелизм vs конкурентность |
 | 5 | Channels | System.Threading.Channels, producer-consumer |
 | 6 | Cancellation Patterns | CancellationToken, паттерны отмены |
+| 7 | Async Streams (IAsyncEnumerable) | IAsyncEnumerable<T>, await foreach, async generators |
+| 8 | ValueTask | ValueTask vs Task, когда использовать, горячие пути |
 
 ## Порядок изучения
 Threads & ThreadPool → Task & async/await → Synchronization Primitives
 Task & async/await + LINQ → Parallel & PLINQ
 Task & async/await → Channels
 Task & async/await → Cancellation Patterns
+Task & async/await + Generics → Async Streams (IAsyncEnumerable)
+Task & async/await → ValueTask
 
 ## Связи с другими разделами
 Зависит от Memory, Delegates. Используется в ASP.NET Core, EF Core, System Design. Synchronization Primitives связаны с .NET Internals.

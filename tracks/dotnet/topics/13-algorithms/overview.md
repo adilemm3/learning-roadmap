@@ -11,12 +11,16 @@
 | 3 | Trees & Graphs | Деревья, графы, BFS, DFS, обходы |
 | 4 | Dynamic Programming | Мемоизация, табуляция, классические задачи |
 | 5 | Common Interview Problems | Типичные задачи с собеседований |
+| 6 | String Algorithms | KMP, sliding window, two pointers, анаграммы |
+| 7 | Greedy Algorithms | Greedy approach, interval scheduling, задачи на жадность |
 
 ## Порядок изучения
 Complexity & Big O → Sorting & Searching
 Complexity & Big O + Generics → Trees & Graphs
 Complexity & Big O → Dynamic Programming
 Trees & Graphs + Dynamic Programming → Common Interview Problems
+Complexity & Big O + Arrays & Lists → String Algorithms
+Complexity & Big O → Greedy Algorithms
 
 ## Связи с другими разделами
 Big O используется при выборе коллекций и оптимизации SQL. Interview Problems — подготовка к собесам.

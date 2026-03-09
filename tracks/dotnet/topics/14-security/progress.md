@@ -6,3 +6,5 @@
 | 2 | Cryptography Basics | ⬜ | — | — |
 | 3 | Auth Patterns | ⬜ | — | — |
 | 4 | Secure Coding | ⬜ | — | — |
+| 5 | Data Protection API | ⬜ | — | — |
+| 6 | Secret Management | ⬜ | — | — |
