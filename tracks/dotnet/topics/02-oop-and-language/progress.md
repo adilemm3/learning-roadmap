@@ -9,3 +9,5 @@
 | 5 | LINQ | ⬜ | — | — |
 | 6 | Expression Trees | ⬜ | — | — |
 | 7 | Reflection | ⬜ | — | — |
+| 8 | Iterators & yield | ⬜ | — | — |
+| 9 | Covariance & Contravariance | ⬜ | — | — |

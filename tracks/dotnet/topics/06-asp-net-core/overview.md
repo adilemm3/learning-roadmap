@@ -15,6 +15,11 @@
 | 6 | Minimal API | Minimal API, endpoint routing, AOT support | ⬜ | — |
 | 7 | SignalR & gRPC | Real-time с SignalR, gRPC для inter-service | ⬜ | — |
 | 8 | HTTP Clients & IHttpClientFactory | IHttpClientFactory, typed/named clients, Polly, тестирование | ✅ | 2026-03-06 |
+| 9 | Configuration & Options | IConfiguration, IOptions<T>, Options pattern | ⬜ | — |
+| 10 | Logging & Structured Logs | ILogger<T>, Serilog, structured logging | ⬜ | — |
+| 11 | Background Services (IHostedService) | IHostedService, BackgroundService, hosted services | ⬜ | — |
+| 12 | Health Checks | IHealthCheck, readiness/liveness, HealthCheckService | ⬜ | — |
+| 13 | API Versioning | Asp.Versioning, URL/header versioning | ⬜ | — |
 
 ## Порядок изучения и зависимости
 
@@ -28,6 +33,11 @@
 | Minimal API | Routing & Controllers, Dependency Injection |
 | SignalR & gRPC | Task & async/await (04), Middleware Pipeline |
 | HTTP Clients & IHttpClientFactory | Dependency Injection, Task & async/await (04) |
+| Configuration & Options | Dependency Injection |
+| Logging & Structured Logs | Dependency Injection, Middleware Pipeline |
+| Background Services (IHostedService) | Dependency Injection, Task & async/await (04) |
+| Health Checks | Middleware Pipeline, Dependency Injection |
+| API Versioning | Routing & Controllers, Minimal API |
 
 Рекомендуемый порядок:
 1. Middleware Pipeline + Dependency Injection (параллельно, независимы)
@@ -36,6 +46,9 @@
 4. Minimal API
 5. HTTP Clients & IHttpClientFactory
 6. SignalR & gRPC
+7. Configuration & Options + Logging & Structured Logs
+8. Background Services (IHostedService) + Health Checks
+9. API Versioning
 
 ## Связи с другими разделами
 Зависит от Async, Delegates, Interfaces. Является основой для Data Access, Security, DevOps.

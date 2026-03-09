@@ -6,3 +6,4 @@
 | 2 | Structural | ⬜ | — | — |
 | 3 | Behavioral | ⬜ | — | — |
 | 4 | Patterns in .NET | ⬜ | — | — |
+| 5 | Concurrency Patterns | ⬜ | — | — |

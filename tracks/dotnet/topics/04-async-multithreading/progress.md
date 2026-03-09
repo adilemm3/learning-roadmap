@@ -8,3 +8,5 @@
 | 4 | Parallel & PLINQ | ⬜ | — | — |
 | 5 | Channels | ⬜ | — | — |
 | 6 | Cancellation Patterns | ⬜ | — | — |
+| 7 | Async Streams (IAsyncEnumerable) | ⬜ | — | — |
+| 8 | ValueTask | ⬜ | — | — |

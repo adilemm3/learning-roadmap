@@ -13,6 +13,8 @@
 | 5 | Microservices | Декомпозиция, коммуникация, saga, outbox |
 | 6 | Modular Monolith | Модули, границы, миграция в микросервисы |
 | 7 | Hexagonal / Ports & Adapters | Гексагональная архитектура, порты, адаптеры |
+| 8 | Saga Pattern | Distributed transactions, choreography vs orchestration |
+| 9 | Outbox Pattern | Transactional outbox, guaranteed delivery, at-least-once |
 
 ## Порядок изучения
 Interfaces + Design Patterns → SOLID → Clean Architecture → DDD
@@ -20,6 +22,8 @@ DDD + Messaging → CQRS & Event Sourcing
 DDD + Messaging + Docker → Microservices
 Clean Architecture + DDD → Modular Monolith
 Clean Architecture + SOLID → Hexagonal / Ports & Adapters
+CQRS & Event Sourcing + Messaging → Saga Pattern
+EF Core Advanced + Messaging → Outbox Pattern
 
 ## Связи с другими разделами
 Зависит от OOP, Design Patterns, DI. Связан с System Design, Testing (testability).

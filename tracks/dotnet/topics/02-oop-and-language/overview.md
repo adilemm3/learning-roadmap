@@ -13,6 +13,8 @@
 | 5 | LINQ | Language Integrated Query, отложенное выполнение, IEnumerable |
 | 6 | Expression Trees | Деревья выражений, компиляция, IQueryable |
 | 7 | Reflection | Рефлексия, атрибуты, динамическая генерация |
+| 8 | Iterators & yield | IEnumerable<T> через yield, ленивые последовательности |
+| 9 | Covariance & Contravariance | out/in в обобщениях, IEnumerable<out T>, IComparer<in T> |
 
 ## Порядок изучения
 Inheritance & Polymorphism → Interfaces & Abstract → Generics
@@ -20,6 +22,8 @@ Type System → Delegates & Events
 Delegates & Events + Generics → LINQ
 LINQ + Delegates & Events → Expression Trees
 Type System + Generics → Reflection
+Generics + Interfaces → Iterators & yield
+Generics + Interfaces → Covariance & Contravariance
 
 ## Связи с другими разделами
 Связан с C# Fundamentals (типы). LINQ используется в Collections, EF Core, Async. Delegates — основа для Events и Async.

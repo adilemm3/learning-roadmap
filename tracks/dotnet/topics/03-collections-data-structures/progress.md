@@ -7,3 +7,5 @@
 | 3 | Concurrent Collections | ⬜ | — | — |
 | 4 | Span & Memory | ⬜ | — | — |
 | 5 | Custom Collections | ⬜ | — | — |
+| 6 | Immutable Collections | ⬜ | — | — |
+| 7 | Stack, Queue & PriorityQueue | ⬜ | — | — |

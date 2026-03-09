@@ -7,3 +7,5 @@
 | 3 | Trees & Graphs | ⬜ | — | — |
 | 4 | Dynamic Programming | ⬜ | — | — |
 | 5 | Common Interview Problems | ⬜ | — | — |
+| 6 | String Algorithms | ⬜ | — | — |
+| 7 | Greedy Algorithms | ⬜ | — | — |

@@ -10,12 +10,16 @@
 | 2 | Cryptography Basics | Хэширование, шифрование, цифровые подписи |
 | 3 | Auth Patterns | OAuth 2.0, OpenID Connect, SSO, API keys |
 | 4 | Secure Coding | Безопасное кодирование, code review checklist |
+| 5 | Data Protection API | IDataProtector, key management, защита данных в .NET |
+| 6 | Secret Management | User Secrets, Azure Key Vault, безопасное хранение секретов |
 
 ## Порядок изучения
 Routing & Controllers + Authentication & Authorization → OWASP Top 10
 Type System → Cryptography Basics
 Authentication & Authorization + OWASP Top 10 → Auth Patterns
 OWASP Top 10 → Secure Coding
+Authentication & Authorization + Cryptography Basics → Data Protection API
+Dependency Injection + Configuration & Options → Secret Management
 
 ## Связи с другими разделами
 Зависит от ASP.NET Core (auth). Связан с Architecture, API Design.

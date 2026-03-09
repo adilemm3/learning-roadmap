@@ -9,3 +9,5 @@
 | 5 | Load Balancing & Scaling | ⬜ | — | — |
 | 6 | Database Sharding & Replication | ⬜ | — | — |
 | 7 | Real-World Systems | ⬜ | — | — |
+| 8 | CAP Theorem | ⬜ | — | — |
+| 9 | Circuit Breaker & Resilience | ⬜ | — | — |
