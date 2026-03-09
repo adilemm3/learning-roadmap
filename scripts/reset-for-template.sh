@@ -5,34 +5,19 @@ set -euo pipefail
 
 TRACK="dotnet"
 TOPICS_DIR="tracks/${TRACK}/topics"
-TOPIC_TEMPLATES="templates/topic"
-SECTION_TEMPLATES="templates/section"
 
 echo "Сброс личных данных для template..."
 
-# ── 1. Все 11 файлов каждой подтемы ────────────────────────────────────────
-# Для каждой директории подтемы: читаем название из summary.md, сбрасываем все файлы
+# ── 1. Удалить директории изученных подтем ─────────────────────────────────
+# Подтема считается "изученной" если session.md содержит больше 3 строк (есть контент)
 find "$TOPICS_DIR" -mindepth 2 -maxdepth 2 -type d | while read -r topic_dir; do
-  summary="$topic_dir/summary.md"
-  [ -f "$summary" ] || continue
-
-  # Извлечь название темы из первой строки summary.md: "# Type System" → "Type System"
-  topic_name=$(head -1 "$summary" | sed 's/^# //')
-  # Извлечь уровень и зависимости из строк 2-3
-  level=$(sed -n '2p' "$summary" | sed 's/^> Уровень: //')
-  deps=$(sed -n '3p' "$summary" | sed 's/^> Зависимости: //')
-
-  # Сбросить каждый файл шаблоном из templates/topic/
-  for tmpl in "$TOPIC_TEMPLATES"/*.md; do
-    filename=$(basename "$tmpl")
-    target="$topic_dir/$filename"
-    content=$(cat "$tmpl")
-    # Заменить плейсхолдеры
-    content="${content//\{\{TOPIC_NAME\}\}/$topic_name}"
-    content="${content//\{\{LEVEL\}\}/$level}"
-    content="${content//\{\{DEPENDENCIES\}\}/$deps}"
-    printf '%s\n' "$content" > "$target"
-  done
+  session="$topic_dir/session.md"
+  [ -f "$session" ] || continue
+  line_count=$(wc -l < "$session")
+  if [ "$line_count" -gt 3 ]; then
+    rm -rf "$topic_dir"
+    echo "  Удалена: $topic_dir"
+  fi
 done
 
 # ── 2. Section-level progress.md ────────────────────────────────────────────
@@ -204,7 +189,7 @@ done
 
 echo ""
 echo "✓ Сброс завершён. Файлы затронуты:"
-echo "  - Все 11 файлов каждой подтемы → шаблоны"
+echo "  - Изученные подтемы → удалены (Claude создаст при необходимости)"
 echo "  - Section progress.md → ⬜"
 echo "  - Track progress.md → ⬜"
 echo "  - weak-spots, repetition-log, glossary → пустые"
