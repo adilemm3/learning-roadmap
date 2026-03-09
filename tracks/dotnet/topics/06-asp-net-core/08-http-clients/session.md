@@ -683,3 +683,27 @@ services.AddHttpClient<PaymentClient>(client =>
 → ✅ Senior-мышление. Дополнение: Idempotency-Key позволяет retry даже при таймауте если шлюз поддерживает.
 
 **Итоговая оценка: Middle** — тема усвоена уверенно.
+
+---
+
+## Сессия 3 — 2026-03-09
+> Тип: практика
+
+### Практика — Задача 1: Выбери тип клиента
+
+**Claude:** У тебя есть `NotificationService`, который отправляет push-уведомления через внешний API (`https://push.api.com`). Сервис используется в 3 контроллерах. Какой тип HTTP-клиента выбрать и почему? Напиши регистрацию в DI.
+
+**Адиль:** typed,
+services.AddHttpCleint<PushHttpClient>client =>
+{
+    client.BaseAddress = new Uri("https://push.api.com");
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+
+**Claude:** Правильный выбор — Typed client ✅. По коду — логика верная, но есть нюансы:
+- Опечатка: `AddHttpCleint` → `AddHttpClient`
+- `client.Timeout` — это таймаут **всей операции включая все retry**. Если 30 сек + 3 retry по 10 сек → на третьей попытке уже `TaskCanceledException`
+- Для per-attempt таймаута нужен Polly: `.AddPolicyHandler(Policy.TimeoutAsync<HttpResponseMessage>(10))`
+- `client.Timeout` лучше использовать как аварийный потолок (60 сек), а не per-attempt
+
+*Сессия прервана на задаче 1/5.*

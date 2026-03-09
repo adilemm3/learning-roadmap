@@ -175,12 +175,12 @@ cat > "improvements.md" << 'EOF'
 <!-- Формат: - YYYY-MM-DD | описание (причина отклонения) -->
 EOF
 
-# ── 6. Имена в CLAUDE.md и скиллах ──────────────────────────────────────────
-# CLAUDE.md
+# ── 6. Имена в CLAUDE.md, SETUP.md и скиллах ─────────────────────────────────
+# CLAUDE.md + SETUP.md
 sed -i '' \
   -e 's/Адиль/[YOUR_NAME]/g' \
   -e 's/adilemm3/[GITHUB_USERNAME]/g' \
-  CLAUDE.md
+  CLAUDE.md SETUP.md
 
 # SKILL.md файлы — заменить имя в приветствиях и примерах диалогов
 find .claude/skills -name "*.md" | while read -r skill; do
