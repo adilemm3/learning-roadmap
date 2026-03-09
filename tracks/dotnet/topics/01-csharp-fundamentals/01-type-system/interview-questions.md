@@ -1,20 +1,13 @@
 # Type System — Вопросы для собеседования
 
-## 🟢 Junior
+## Junior
 1. <!-- TODO -->
 
-## 🟡 Middle
+## Middle
 1. <!-- TODO -->
 
-## 🔴 Senior
+## Senior
 1. <!-- TODO -->
 
-## 🏛 Architect
+## Architect
 1. <!-- TODO -->
-
----
-<details><summary>Ответы</summary>
-
-<!-- ответы на все вопросы -->
-
-</details>

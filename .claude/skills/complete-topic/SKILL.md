@@ -34,18 +34,19 @@
 
 ### 3. Генерация файлов подтемы
 
-Сгенерировать 8 файлов. Каждый файл имеет свои источники и критерии:
+Сгенерировать 9 файлов. Каждый файл имеет свои источники и критерии:
 
 | Файл | Что генерировать | Источники | Критерии |
 |------|-----------------|-----------|----------|
 | `cheatsheet.md` | Краткая ёмкая выжимка: суть, код, антипаттерны, таблицы | `summary.md` (сжать), `learning-plan.md` (блоки), `session.md` (инсайты) | Покрывает все блоки, есть код + антипаттерны, не копия summary |
-| `interview-questions.md` | Только вопросы по 4 уровням (без ответов) | `summary.md` (концепции), `session.md` (инсайты «Собес:», ошибки) | 4 уровня (Junior/Middle/Senior/Architect), min 2 вопроса/уровень, Architect = trade-off. Ссылка на `interview-answers.md` |
+| `interview-questions.md` | Только вопросы по 4 уровням (без ответов) | `summary.md` (концепции), `session.md` (инсайты «Собес:», ошибки) | 4 уровня (Junior/Middle/Senior/Architect), min 2 вопроса/уровень, Architect = trade-off. Заголовки без эмодзи: `## Junior`, `## Middle` и т.д. |
 | `interview-answers.md` | Вопросы + ответы в `<details>` | `interview-questions.md` (вопросы), `summary.md`, `session.md` | Каждый вопрос с ответом в `<details><summary>Ответ</summary>` |
 | `practice.md` | Только задания (без решений) | `learning-plan.md` (блоки), `session.md` (слабые места), `summary.md` (концепции) | 5 задач (2 Easy + 2 Medium + 1 Hard), НЕ дублируют session.md, разные блоки и типы. Ссылка на `practice-solutions.md` |
 | `practice-solutions.md` | Подсказки + решения в `<details>` с пояснениями кода | `practice.md` (задания), `summary.md`, `session.md` | Каждая задача: `<details>` подсказка + `<details>` решение. Код с комментариями к каждой строке: что делает и почему. Общая концепция перед кодом |
 | `cases.md` | 2-4 production-кейса | `summary.md`, `session.md` (сценарии), знания о типичных проблемах | Min 2, структура: ситуация → причина → решение → урок, min 1 trade-off |
 | `diagram.md` | ASCII/mermaid диаграммы | `summary.md` (концепции), `session.md` (схемы из объяснений) | Min 1, покрывает главные концепции |
 | `resources.md` | Ссылки: docs, статьи, пакеты | Знания Claude, упомянутые в сессии ссылки | Min 1 Microsoft Docs + 1 статья + NuGet если применимо |
+| `flashcards/<section>-<topic>.md` | 10-15 атомарных карточек Q&A | `summary.md` (ключевые концепции), `interview-questions.md` (Junior/Middle вопросы) | Atomic: одна карточка = одна концепция. Формат: `**Q:** ...` + `<details><summary>A</summary>...</details>`. Группировать по блокам темы. НЕ дублировать формулировки из interview-questions дословно. Путь: `flashcards/<section-num>-<topic-dir>.md` |
 
 ### 4. Финализация learning-plan.md и summary.md
 
