@@ -1,6 +1,6 @@
 # HTTP Clients & IHttpClientFactory — Конспект
-
-## Блок 1: HttpClient под капотом
+> Уровень: 
+> Зависимости: ## Блок 1: HttpClient под капотом
 
 ## Ключевые концепции
 <!-- bullet points с основными идеями -->

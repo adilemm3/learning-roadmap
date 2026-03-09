@@ -9,4 +9,4 @@
 | 5 | Filters & Model Binding | ⬜ | — | — |
 | 6 | Minimal API | ⬜ | — | — |
 | 7 | SignalR & gRPC | ⬜ | — | — |
-| 8 | HTTP Clients & IHttpClientFactory | ✅ | 4 | 2026-03-06 |
+| 8 | HTTP Clients & IHttpClientFactory | ⬜ | — | — |

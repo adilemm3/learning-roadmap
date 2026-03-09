@@ -1,5 +1,7 @@
 # Type System — Вопросы для собеседования
 
+> Ответы → `interview-answers.md`
+
 ## Junior
 1. <!-- TODO -->
 

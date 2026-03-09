@@ -1,4 +1,4 @@
-# HTTP Clients & IHttpClientFactory — Конспект — Ответы на вопросы
+# Type System — Ответы на вопросы
 
 ## Junior
 

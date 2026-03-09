@@ -1,19 +1,16 @@
-# HTTP Clients & IHttpClientFactory — Ресурсы
+# HTTP Clients & IHttpClientFactory — Конспект — Источники
 
-## Официальная документация
+## Документация
+- [ ] [Microsoft Docs: HTTP Clients & IHttpClientFactory — Конспект](https://learn.microsoft.com)
 
-- [IHttpClientFactory в ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/http-requests) — Microsoft Docs, основной источник
-- [Polly документация](https://www.thepollyproject.org/) — официальный сайт библиотеки
-- [HttpClient Guidelines](https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/http/httpclient-guidelines) — Microsoft, когда что использовать
+## Книги
+- [ ] <!-- TODO -->
 
-## Статьи
+## Статьи и блоги
+- [ ] <!-- TODO -->
 
-- [You're using HttpClient wrong](https://josefottosson.se/you-are-probably-still-using-httpclient-wrong-and-it-is-destabilizing-your-software/) — Josef Ottosson, классика про socket exhaustion
-- [Polly and HttpClientFactory](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/implement-http-call-retries-exponential-backoff-polly) — Microsoft, resilience паттерны
+## Видео и доклады
+- [ ] <!-- TODO -->
 
-## NuGet пакеты
-
-- `Microsoft.Extensions.Http` — IHttpClientFactory (встроен в ASP.NET Core)
-- `Microsoft.Extensions.Http.Polly` — интеграция Polly с IHttpClientFactory
-- `RichardSzalay.MockHttp` — MockHttpMessageHandler для тестов
-- `Polly` — retry, circuit breaker, timeout политики
+## Практика
+- [ ] <!-- TODO -->

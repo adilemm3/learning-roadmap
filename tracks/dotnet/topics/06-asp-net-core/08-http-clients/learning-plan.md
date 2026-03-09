@@ -1,4 +1,4 @@
-# HTTP Clients TITLE_PLACEHOLDER IHttpClientFactory — План изучения
+# HTTP Clients & IHttpClientFactory — Конспект — План изучения
 > Статус: ⬜ не начата
 > Блок: 0/N | Последняя сессия: —
 
